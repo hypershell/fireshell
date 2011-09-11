@@ -1,0 +1,13 @@
+#include "nsISupports.idl"
+#include "nsIHttpHeaderVisitor.idl"
+
+[scriptable, uuid(58baf11d-f41f-41ed-9c1c-8150962a1da4)]
+interface hyIHttpHeaderFields : nsIHttpHeaderVisitor
+{
+  ACString getValue(in ACString aKey);
+  ACString getKeyAt(in long aPos);
+  ACString getValueAt(in long aPos);
+  void acceptHeaderVisitor(in nsIHttpHeaderVisitor aVisitor);
+  
+  readonly attribute long count;
+};

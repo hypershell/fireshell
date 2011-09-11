@@ -1,0 +1,9 @@
+#include "nsISupports.idl"
+#include "hyIDataBuffer.idl"
+
+[scriptable, uuid(806cd87f-80b5-453c-b1c8-739341c8555a)]
+interface hyIUploadDataChannel : nsISupports
+{
+  void send(in hyIDataBuffer aBuffer);
+  void close();
+};

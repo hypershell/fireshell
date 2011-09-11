@@ -1,0 +1,22 @@
+#include "nsISupports.idl"
+#include "nsIURI.idl"
+#include "hyIDataChannel.idl"
+#include "hyIHttpHeaderFields.idl"
+
+[scriptable, uuid(54d9f290-535e-423a-bfe0-8f040faae054)]
+interface hyIHttpChannel : nsISupports
+{
+  attribute ACString                        method;
+  attribute ACString                        requestContentType;
+  attribute hyIHttpHeaderFields             requestHeaders;
+  
+  readonly attribute long                   responseStatusCode;
+  readonly attribute ACString               responseStatusText;
+  readonly attribute ACString               responseContentType;
+  readonly attribute hyIHttpHeaderFields    responseHeaders;
+  
+  /*
+   * The raw channel includes the input/output of the HTTP headers
+   */
+  hyIDataChannel getRawChannel();
+};

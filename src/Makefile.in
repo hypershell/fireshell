@@ -1,0 +1,31 @@
+DEPTH		= ../../..
+topsrcdir	= @top_srcdir@
+srcdir		= @srcdir@
+VPATH		= @srcdir@
+
+include $(DEPTH)/config/autoconf.mk
+
+IS_COMPONENT = 1	
+
+MODULE = fireshell
+LIBRARY_NAME = fireshell
+XPI_NAME		= fireshell
+MODULE_NAME = HyshModule
+
+CPPSRCS = \
+    hyDataChannel.cpp \
+    hyDataBuffer.cpp \
+    hyHttpHeaderFields.cpp \
+    hyInputStream.cpp \
+    HyshModule.cpp \
+	hyChannelToStreamConverter.cpp \
+	hyHyshProtocolHandler.cpp \
+	hyNsChannelWrapper.cpp \
+	$(NULL)
+		
+EXTRA_DSO_LDOPTS += \
+  $(XPCOM_GLUE_LDOPTS) \
+  $(NSPR_LIBS) \
+  $(NULL)
+
+include $(topsrcdir)/config/rules.mk

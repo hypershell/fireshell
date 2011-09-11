@@ -1,0 +1,22 @@
+DEPTH		= ../..
+topsrcdir	= @top_srcdir@
+srcdir		= @srcdir@
+VPATH		= @srcdir@
+	
+include $(DEPTH)/config/autoconf.mk
+	
+MODULE = fireshell
+XPIDL_MODULE = fireshell
+LIBRARY_NAME = fireshell
+XPI_NAME		= fireshell
+INSTALL_EXTENSION_ID	= fireshell@hypershell.org
+XPI_PKGNAME		= fireshell
+MODULE_NAME = HyshModule
+
+IS_COMPONENT = 1
+
+DIRS = public src
+
+DIST_FILES = install.rdf
+
+include $(topsrcdir)/config/rules.mk

@@ -1,0 +1,9 @@
+#include "nsISupports.idl"
+#include "hyIDataBuffer.idl"
+
+[scriptable, uuid(dc397423-3a44-4be3-97f0-e744e18dbc0e)]
+interface hyIDataChannelListener : nsISupports
+{
+  void onDataReceive(in hyIDataBuffer aBuffer, in nsISupports aContext);
+  void onDataClose(in nsISupports aContext);
+};

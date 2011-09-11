@@ -1,0 +1,8 @@
+#include "nsISupports.idl"
+#include "nsIDOMDocument.idl"
+
+[scriptable, uuid(785a0097-00f1-4090-8e63-19f66e7cdbe2)]
+interface hyITextHttpChannelListener : nsISupports
+{
+  void onTextDataReceive(in ACString aText, in nsISupports aContext);
+};

@@ -1,0 +1,29 @@
+DEPTH		= ../../..
+topsrcdir	= @top_srcdir@
+srcdir		= @srcdir@
+VPATH		= @srcdir@
+	
+include $(DEPTH)/config/autoconf.mk
+
+MODULE = fireshell
+XPIDL_MODULE = fireshell
+LIBRARY_NAME = fireshell
+XPI_NAME		= fireshell
+
+
+XPIDLSRCS	= \
+		hyIDataBuffer.idl \
+		hyIDataChannel.idl \
+		hyIDataChannelListener.idl \
+		hyIHttpChannel.idl \
+		hyIUploadDataChannel.idl \
+		hyIHttpHeaderFields.idl \
+		hyIXmlHttpChannel.idl \
+		hyIXmlHttpChannelListener.idl \
+		hyITextHttpChannel.idl \
+		hyITextHttpChannelListener.idl \
+		hyIChannelToStreamConverter.idl \
+		hyIChannelToStreamConverterListener.idl \
+		$(NULL)
+		
+include $(topsrcdir)/config/rules.mk

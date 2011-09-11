@@ -1,0 +1,13 @@
+#include "nsISupports.idl"
+#include "hyIDataChannelListener.idl"
+#include "nsIURI.idl"
+
+[scriptable, uuid(daf65c28-7bcf-44e4-898c-3b5e64fc02a9)]
+interface hyIDataChannel : nsISupports
+{
+  void setIncomingChannel(in hyIDataChannel aChannel);
+  void openChannel(in hyIDataChannelListener aListener, in nsISupports aContext);
+
+  readonly attribute ACString ContentType;
+  readonly attribute nsIURI URI;
+};

@@ -1,0 +1,8 @@
+#include "nsISupports.idl"
+
+[scriptable, uuid(ffbf773b-89f8-4028-af84-ba7d847bfd05)]
+interface hyIDataBuffer : nsISupports
+{
+  unsigned long long getLength();
+  voidPtr getBuffer();
+};
