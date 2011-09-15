@@ -1,10 +1,13 @@
 
 #include "nsIChannel.h"
 #include "nsIStreamListener.h"
+#include "nsILoadGroup.h"
+#include "nsIInterfaceRequestor.h"
 #include "hyIDataChannel.h"
 #include "hyIDataChannelListener.h"
 #include "hyIDataBuffer.h"
 #include "nsCOMPtr.h"
+#include "nsStringAPI.h"
 
 class hyNsChannelWrapper 
     : public nsIChannel
@@ -26,8 +29,15 @@ private:
   nsCOMPtr<hyIDataChannel>      mChannel;
   nsCOMPtr<nsIStreamListener>   mListener;
   nsCOMPtr<nsISupports>         mContext;
-  
+  nsCOMPtr<nsILoadGroup>        mLoadGroup;
+  nsCOMPtr<nsISupports>         mOwner;
+  nsCOMPtr<nsIURI>              mOriginalURI;
+  nsCOMPtr<nsIInterfaceRequestor>   mNotificationCallbacks;
+
+  nsCString     mCharset;
+  nsLoadFlags   mLoadFlags;
   PRUint64      mPos;
   bool          mOpeningState;
   bool          mOpenedState;
+  bool          mClosedState;
 };

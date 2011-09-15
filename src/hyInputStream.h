@@ -12,16 +12,17 @@ public:
   NS_DECL_NSIINPUTSTREAM
 
   NS_IMETHOD AddBuffer(hyIDataBuffer *buffer);
-  NS_IMETHOD GetStreamSize(PRUint64 *streamSize);
+  NS_IMETHOD GetStreamSize(PRUint64 *aStreamSize);
 
   hyInputStream();
 
 private:
   ~hyInputStream();
 
-  std::vector< nsCOMPtr<hyIDataBuffer> > mBufferList;
-  PRInt64 mPos;
+  typedef typename std::vector<nsCOMPtr<hyIDataBuffer> >::iterator _buffer_iterator_type;
 
-protected:
-  /* additional members */
+  std::vector< nsCOMPtr<hyIDataBuffer> > mBufferList;
+  
+  PRUint64  mReadSize;
+  PRUint64  mCachedSize;
 };

@@ -3,6 +3,8 @@
 
 #include "hyIHttpHeaderFields.h"
 #include "nsIHttpHeaderVisitor.h"
+#include "nsStringAPI.h"
+#include <map>
 
 #define HY_HTTPHEADERS_CID \
 { 0x14ad1cb8, 0xfa7a, 0x4887, { 0xb7, 0x92, 0x3c, 0x28, 0x50, 0x15, 0xfa, 0x1e } }
@@ -24,6 +26,5 @@ public:
 private:
   ~hyHttpHeaderFields();
 
-protected:
-  /* additional members */
+  std::map<nsCString, nsCString> mHeaders;
 };

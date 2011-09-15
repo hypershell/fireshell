@@ -5,9 +5,13 @@
 #include "hyDataChannel.h"
 #include "hyNsChannelWrapper.h"
 #include "nsNetUtil.h"
+#include "nsIConsoleService.h"
+#include "nsIComponentManager.h"
+#include <string>
 
 NS_IMPL_ISUPPORTS1(hyHyshProtocolHandler, nsIProtocolHandler)
 NS_IMPL_CLASSINFO(hyHyshProtocolHandler, NULL, 0, HY_HYSHPROTOCOLHANDLER_CID)
+NS_IMPL_CI_INTERFACE_GETTER1(hyHyshProtocolHandler, nsIProtocolHandler)
 
 hyHyshProtocolHandler::hyHyshProtocolHandler()
 {
@@ -43,7 +47,18 @@ NS_IMETHODIMP hyHyshProtocolHandler::GetProtocolFlags(PRUint32 *aProtocolFlags)
 /* nsIURI newURI (in AUTF8String aSpec, in string aOriginCharset, in nsIURI aBaseURI); */
 NS_IMETHODIMP hyHyshProtocolHandler::NewURI(const nsACString & aSpec, const char * aOriginCharset, nsIURI *aBaseURI, nsIURI * *_retval NS_OUTPARAM)
 {
-    return NS_ERROR_NOT_IMPLEMENTED;
+    nsresult rv;
+    nsCOMPtr<nsIURI> uri;
+
+    uri = do_CreateInstance("@mozilla.org/network/simple-uri;1", &rv);
+    NS_ENSURE_SUCCESS(rv, rv);
+    
+    rv = uri->SetSpec(aSpec);
+    NS_ENSURE_SUCCESS(rv, rv);
+
+    uri.forget(_retval);
+    return NS_OK;
+
 }
 
 /* nsIChannel newChannel (in nsIURI aURI); */
@@ -57,11 +72,14 @@ NS_IMETHODIMP hyHyshProtocolHandler::NewChannel(nsIURI *aURI, nsIChannel * *_ret
 
     const nsACString& rawURIList = Substring(rawURI, 7, rawURI.Length());
 
+    std::string uriStr(PromiseFlatString(rawURIList));
+
     nsCOMPtr<nsIIOService> ioServ(do_GetIOService(&rv));
     NS_ENSURE_SUCCESS(rv, rv);
+    //return ioServ->NewChannel(rawURIList, NULL, NULL, _retval);
 
-    nsIURI *uri;
-    rv = ioServ->NewURI(rawURIList, NULL, NULL, &uri);
+    nsCOMPtr<nsIURI> uri;
+    rv = ioServ->NewURI(rawURIList, NULL, NULL, getter_AddRefs(uri));
     NS_ENSURE_SUCCESS(rv, rv);
 
     hyDataChannel *dataChannel = new hyDataChannel();
@@ -72,13 +90,16 @@ NS_IMETHODIMP hyHyshProtocolHandler::NewChannel(nsIURI *aURI, nsIChannel * *_ret
     rv = wrapper->Init(dataChannel);
     NS_ENSURE_SUCCESS(rv, rv);
 
+    wrapper->AddRef();
     *_retval = wrapper;
 
     return NS_OK;
+    
 }
 
 /* boolean allowPort (in long port, in string scheme); */
 NS_IMETHODIMP hyHyshProtocolHandler::AllowPort(PRInt32 port, const char * scheme, PRBool *_retval NS_OUTPARAM)
 {
-    return NS_ERROR_NOT_IMPLEMENTED;
+    *_retval = false;
+    return NS_OK;
 }

@@ -1,65 +1,65 @@
 #include "hyDataBuffer.h"
 #include "nsIClassInfoImpl.h"
+#include "nsISupportsImpl.h"
+#include "nsMemory.h"
 
-NS_IMPL_ISUPPORTS2(hyDataBuffer, hyIDataBuffer, nsIInputStream)
+NS_IMPL_ISUPPORTS1(hyDataBuffer, hyIDataBuffer)
+NS_IMPL_CI_INTERFACE_GETTER1(hyDataBuffer, hyIDataBuffer)
 NS_IMPL_CLASSINFO(hyDataBuffer, NULL, 0, HY_DATABUFFER_CID)
 
 hyDataBuffer::hyDataBuffer()
+    : mBuffer(0)
+    , mBufferSize(0)
+    , mEffectiveSize(0)
+    , mInitialized(false)
 {
   /* member initializers and constructor code */
 }
 
 hyDataBuffer::~hyDataBuffer()
 {
-  /* destructor code */
+    /* destructor code */
+    if(mBuffer) {
+        NS_Free(mBuffer);
+    }
 }
 
 NS_IMETHODIMP hyDataBuffer::Init(PRUint64 aSize) {
-    return NS_ERROR_NOT_IMPLEMENTED;
+    if(mInitialized) {
+        return NS_ERROR_NOT_INITIALIZED;
+    }
+    
+    mInitialized = true;
+    mBufferSize = aSize;
+
+    mBuffer = (char*)NS_Alloc(aSize);
+    return NS_OK;
 }
 
-NS_IMETHODIMP hyDataBuffer::SetActualSize(PRUint64 aSize) {
-    return NS_ERROR_NOT_IMPLEMENTED;
+NS_IMETHODIMP hyDataBuffer::SetEffectiveSize(PRUint64 aSize) {
+    if(!mInitialized) {
+        return NS_ERROR_NOT_INITIALIZED;
+    }
+
+    if(aSize > mBufferSize) {
+        return NS_ERROR_FAILURE;
+    }
+
+    mEffectiveSize = aSize;
+    return NS_OK;
 }
 
-/* unsigned long long getLength (); */
-NS_IMETHODIMP hyDataBuffer::GetLength(PRUint64 *_retval NS_OUTPARAM)
+/* readonly attribute unsigned long long size; */
+NS_IMETHODIMP hyDataBuffer::GetSize(PRUint64 *aSize)
 {
-    return NS_ERROR_NOT_IMPLEMENTED;
+    *aSize = mEffectiveSize;
+    return NS_OK;
 }
 
-/* voidPtr getBuffer (); */
-NS_IMETHODIMP hyDataBuffer::GetBuffer(void **_retval NS_OUTPARAM)
+/* string getBuffer (); */
+NS_IMETHODIMP hyDataBuffer::GetBuffer(char * *_retval NS_OUTPARAM)
 {
-    return NS_ERROR_NOT_IMPLEMENTED;
+    *_retval = mBuffer;
+    return NS_OK;
 }
 
-/* void close (); */
-NS_IMETHODIMP hyDataBuffer::Close()
-{
-    return NS_ERROR_NOT_IMPLEMENTED;
-}
-
-/* unsigned long available (); */
-NS_IMETHODIMP hyDataBuffer::Available(PRUint32 *_retval NS_OUTPARAM)
-{
-    return NS_ERROR_NOT_IMPLEMENTED;
-}
-
-/* [noscript] unsigned long read (in charPtr aBuf, in unsigned long aCount); */
-NS_IMETHODIMP hyDataBuffer::Read(char *aBuf, PRUint32 aCount, PRUint32 *_retval NS_OUTPARAM)
-{
-    return NS_ERROR_NOT_IMPLEMENTED;
-}
-
-/* [noscript] unsigned long readSegments (in nsWriteSegmentFun aWriter, in voidPtr aClosure, in unsigned long aCount); */
-NS_IMETHODIMP hyDataBuffer::ReadSegments(nsWriteSegmentFun aWriter, void *aClosure, PRUint32 aCount, PRUint32 *_retval NS_OUTPARAM)
-{
-    return NS_ERROR_NOT_IMPLEMENTED;
-}
-
-/* boolean isNonBlocking (); */
-NS_IMETHODIMP hyDataBuffer::IsNonBlocking(PRBool *_retval NS_OUTPARAM)
-{
-    return NS_ERROR_NOT_IMPLEMENTED;
-}

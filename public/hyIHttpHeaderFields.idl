@@ -5,9 +5,5 @@
 interface hyIHttpHeaderFields : nsIHttpHeaderVisitor
 {
   ACString getValue(in ACString aKey);
-  ACString getKeyAt(in long aPos);
-  ACString getValueAt(in long aPos);
   void acceptHeaderVisitor(in nsIHttpHeaderVisitor aVisitor);
-  
-  readonly attribute long count;
 };

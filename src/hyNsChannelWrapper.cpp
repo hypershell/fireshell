@@ -7,6 +7,8 @@ hyNsChannelWrapper::hyNsChannelWrapper()
     : mPos(0)
     , mOpeningState(false)
     , mOpenedState(false)
+    , mClosedState(false)
+    , mLoadFlags(nsIRequest::LOAD_NORMAL)
 {
   /* member initializers and constructor code */
 }
@@ -25,11 +27,14 @@ NS_IMETHODIMP hyNsChannelWrapper::Init(hyIDataChannel *channel)
 /* attribute nsIURI originalURI; */
 NS_IMETHODIMP hyNsChannelWrapper::GetOriginalURI(nsIURI * *aOriginalURI)
 {
-    return mChannel->GetURI(aOriginalURI);
+    *aOriginalURI = mOriginalURI;
+    NS_IF_ADDREF(*aOriginalURI);
+    return NS_OK;
 }
 NS_IMETHODIMP hyNsChannelWrapper::SetOriginalURI(nsIURI *aOriginalURI)
 {
-    // ignore
+    return NS_ERROR_NOT_IMPLEMENTED;
+    mOriginalURI = aOriginalURI;
     return NS_OK;
 }
 
@@ -42,29 +47,34 @@ NS_IMETHODIMP hyNsChannelWrapper::GetURI(nsIURI * *aURI)
 /* attribute nsISupports owner; */
 NS_IMETHODIMP hyNsChannelWrapper::GetOwner(nsISupports * *aOwner)
 {
-    *aOwner = NULL;
+    *aOwner = mOwner;
+    NS_IF_ADDREF(*aOwner);
     return NS_OK;
 }
 NS_IMETHODIMP hyNsChannelWrapper::SetOwner(nsISupports *aOwner)
 {
-    // ignore
+    mOwner = aOwner;
     return NS_OK;
 }
 
 /* attribute nsIInterfaceRequestor notificationCallbacks; */
 NS_IMETHODIMP hyNsChannelWrapper::GetNotificationCallbacks(nsIInterfaceRequestor * *aNotificationCallbacks)
 {
-    return NS_ERROR_NOT_IMPLEMENTED;
+    *aNotificationCallbacks = mNotificationCallbacks;
+    NS_IF_ADDREF(*aNotificationCallbacks);
+    return NS_OK;
 }
 NS_IMETHODIMP hyNsChannelWrapper::SetNotificationCallbacks(nsIInterfaceRequestor *aNotificationCallbacks)
 {
-    return NS_ERROR_NOT_IMPLEMENTED;
+    mNotificationCallbacks = aNotificationCallbacks;
+    return NS_OK;
 }
 
 /* readonly attribute nsISupports securityInfo; */
 NS_IMETHODIMP hyNsChannelWrapper::GetSecurityInfo(nsISupports * *aSecurityInfo)
 {
-    return NS_ERROR_NOT_IMPLEMENTED;
+    *aSecurityInfo = nsnull;
+    return NS_OK;
 }
 
 /* attribute ACString contentType; */
@@ -81,11 +91,13 @@ NS_IMETHODIMP hyNsChannelWrapper::SetContentType(const nsACString & aContentType
 /* attribute ACString contentCharset; */
 NS_IMETHODIMP hyNsChannelWrapper::GetContentCharset(nsACString & aContentCharset)
 {
-    return NS_ERROR_NOT_IMPLEMENTED;
+    aContentCharset = mCharset;
+    return NS_OK;
 }
 NS_IMETHODIMP hyNsChannelWrapper::SetContentCharset(const nsACString & aContentCharset)
 {
-    return NS_ERROR_NOT_IMPLEMENTED;
+    mCharset = aContentCharset;
+    return NS_OK;
 }
 
 /* attribute long contentLength; */
@@ -124,57 +136,73 @@ NS_IMETHODIMP hyNsChannelWrapper::AsyncOpen(nsIStreamListener *aListener, nsISup
 /* readonly attribute AUTF8String name; */
 NS_IMETHODIMP hyNsChannelWrapper::GetName(nsACString & aName)
 {
-    return NS_ERROR_NOT_IMPLEMENTED;
+    nsresult rv;
+    nsCOMPtr<nsIURI> uri;
+    
+    rv = mChannel->GetURI(getter_AddRefs(uri));
+    NS_ENSURE_SUCCESS(rv, rv);
+
+    return uri->GetSpec(aName);
 }
 
 /* boolean isPending (); */
 NS_IMETHODIMP hyNsChannelWrapper::IsPending(PRBool *_retval NS_OUTPARAM)
 {
-    return NS_ERROR_NOT_IMPLEMENTED;
+    *_retval = mOpenedState && !mClosedState;
+    return NS_OK;
 }
 
 /* readonly attribute nsresult status; */
 NS_IMETHODIMP hyNsChannelWrapper::GetStatus(nsresult *aStatus)
 {
-    return NS_ERROR_NOT_IMPLEMENTED;
+    *aStatus = NS_OK;
+    return NS_OK;
 }
 
 /* void cancel (in nsresult aStatus); */
 NS_IMETHODIMP hyNsChannelWrapper::Cancel(nsresult aStatus)
 {
-    return NS_ERROR_NOT_IMPLEMENTED;
+    // ignore
+    return NS_OK;
 }
 
 /* void suspend (); */
 NS_IMETHODIMP hyNsChannelWrapper::Suspend()
 {
-    return NS_ERROR_NOT_IMPLEMENTED;
+    // ignore
+    return NS_OK;
 }
 
 /* void resume (); */
 NS_IMETHODIMP hyNsChannelWrapper::Resume()
 {
-    return NS_ERROR_NOT_IMPLEMENTED;
+    // ignore
+    return NS_OK;
 }
 
 /* attribute nsILoadGroup loadGroup; */
 NS_IMETHODIMP hyNsChannelWrapper::GetLoadGroup(nsILoadGroup * *aLoadGroup)
 {
-    return NS_ERROR_NOT_IMPLEMENTED;
+    *aLoadGroup = mLoadGroup;
+    NS_IF_ADDREF(*aLoadGroup);
+    return NS_OK;
 }
 NS_IMETHODIMP hyNsChannelWrapper::SetLoadGroup(nsILoadGroup *aLoadGroup)
 {
-    return NS_ERROR_NOT_IMPLEMENTED;
+    mLoadGroup = aLoadGroup;
+    return NS_OK;
 }
 
 /* attribute nsLoadFlags loadFlags; */
 NS_IMETHODIMP hyNsChannelWrapper::GetLoadFlags(nsLoadFlags *aLoadFlags)
 {
-    return NS_ERROR_NOT_IMPLEMENTED;
+    *aLoadFlags = mLoadFlags;
+    return NS_OK;
 }
 NS_IMETHODIMP hyNsChannelWrapper::SetLoadFlags(nsLoadFlags aLoadFlags)
 {
-    return NS_ERROR_NOT_IMPLEMENTED;
+    mLoadFlags = aLoadFlags;
+    return NS_OK;
 }
 
 /* void onDataReceive (in hyIDataBuffer aBuffer, in nsISupports aContext); */
@@ -191,7 +219,7 @@ NS_IMETHODIMP hyNsChannelWrapper::OnDataReceive(hyIDataBuffer *aBuffer, nsISuppo
         mListener->OnStartRequest(this, mContext);
     }
 
-    hyInputStream *stream = new hyInputStream();
+    nsCOMPtr<hyInputStream> stream = new hyInputStream();
 
     rv = stream->AddBuffer(aBuffer);
     NS_ENSURE_SUCCESS(rv, rv);
@@ -208,5 +236,25 @@ NS_IMETHODIMP hyNsChannelWrapper::OnDataReceive(hyIDataBuffer *aBuffer, nsISuppo
 /* void onDataClose (in nsISupports aContext); */
 NS_IMETHODIMP hyNsChannelWrapper::OnDataClose(nsISupports *aContext)
 {
-    return NS_ERROR_NOT_IMPLEMENTED;
+    mClosedState = true;
+    return mListener->OnStopRequest(this, mContext, NS_OK);
+}
+
+
+/* readonly attribute unsigned long contentDisposition; */
+NS_IMETHODIMP hyNsChannelWrapper::GetContentDisposition(PRUint32 *aContentDisposition)
+{
+    return NS_ERROR_NOT_AVAILABLE;
+}
+
+/* readonly attribute AString contentDispositionFilename; */
+NS_IMETHODIMP hyNsChannelWrapper::GetContentDispositionFilename(nsAString & aContentDispositionFilename)
+{
+    return NS_ERROR_NOT_AVAILABLE;
+}
+
+/* readonly attribute ACString contentDispositionHeader; */
+NS_IMETHODIMP hyNsChannelWrapper::GetContentDispositionHeader(nsACString & aContentDispositionHeader)
+{
+    return NS_ERROR_NOT_AVAILABLE;
 }

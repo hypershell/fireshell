@@ -5,8 +5,10 @@
 #include "hyDataBuffer.h"
 #include "nsNetUtil.h"
 #include "nsIUploadChannel.h"
+#include "hyHttpHeaderCopier.h"
   
 NS_IMPL_ISUPPORTS3(hyDataChannel, hyIDataChannel, hyIHttpChannel, nsIStreamListener)
+NS_IMPL_CI_INTERFACE_GETTER3(hyDataChannel, hyIDataChannel, hyIHttpChannel, nsIStreamListener)
 NS_IMPL_CLASSINFO(hyDataChannel, NULL, 0, HY_DATACHANNEL_CID)
 
 hyDataChannel::hyDataChannel()
@@ -56,6 +58,9 @@ NS_IMETHODIMP hyDataChannel::OpenChannel(hyIDataChannelListener *aListener, nsIS
     }
     mOpeningState = true;
 
+    mListener = aListener;
+    mContext = aContext;
+
     nsresult rv;
 
     nsCOMPtr<nsIIOService> ioServ(do_GetIOService(&rv));
@@ -97,19 +102,19 @@ NS_IMETHODIMP hyDataChannel::OnDataAvailable
 
     nsresult rv;
 
-    hyDataBuffer *buffer = new hyDataBuffer();
+    nsCOMPtr<hyDataBuffer> buffer = new hyDataBuffer();
     rv = buffer->Init(aCount);
     NS_ENSURE_SUCCESS(rv, rv);
 
-    void *rawBuffer;
+    char *rawBuffer;
     rv = buffer->GetBuffer(&rawBuffer);
     NS_ENSURE_SUCCESS(rv, rv);
 
     PRUint32 actualSize;
-    rv = aInputStream->Read((char*)rawBuffer, aCount, &actualSize);
+    rv = aInputStream->Read(rawBuffer, aCount, &actualSize);
     NS_ENSURE_SUCCESS(rv, rv);
 
-    rv = buffer->SetActualSize(actualSize);
+    rv = buffer->SetEffectiveSize(actualSize);
     NS_ENSURE_SUCCESS(rv, rv);
 
     return mListener->OnDataReceive(buffer, mContext);
@@ -153,8 +158,8 @@ NS_IMETHODIMP hyDataChannel::OnChannelConversionComplete(nsIInputStream *aStream
     nsCOMPtr<hyIHttpChannel> incomingHttpChannel(do_QueryInterface(mIncomingChannel));
     if(incomingHttpChannel) {
         // Our upload channel is a HTTP channel. Copying the headers.
-        hyIHttpHeaderFields *responseHeaders;
-        incomingHttpChannel->GetResponseHeaders(&responseHeaders);
+        nsCOMPtr<hyIHttpHeaderFields> responseHeaders;
+        incomingHttpChannel->GetResponseHeaders(getter_AddRefs(responseHeaders));
 
         rv = ConvertResponseToRequest(responseHeaders, getter_AddRefs(mRequestHeaders));
         NS_ENSURE_SUCCESS(rv, rv);
@@ -177,23 +182,13 @@ NS_IMETHODIMP hyDataChannel::OpenActualChannel() {
     mOpenedState = true;
 
     nsresult rv;
-    PRInt32 count;
-    nsCString key;
-    nsCString value;
+    nsCOMPtr<hyHttpHeaderCopier> copier = new hyHttpHeaderCopier();
 
-    rv = mRequestHeaders->GetCount(&count);
+    rv = copier->Init(mRequestHeaders, mActualChannel);
     NS_ENSURE_SUCCESS(rv, rv);
 
-    for(int i=0; i < count; ++i) {
-        rv = mRequestHeaders->GetKeyAt(i, key);
-        NS_ENSURE_SUCCESS(rv, rv);
-
-        rv = mRequestHeaders->GetValueAt(i, value);
-        NS_ENSURE_SUCCESS(rv, rv);
-
-        rv = mActualChannel->SetRequestHeader(key, value, false);
-        NS_ENSURE_SUCCESS(rv, rv);
-    }
+    rv = copier->DoCopy();
+    NS_ENSURE_SUCCESS(rv, rv);
 
     if(mRequestContentType != "") {
         rv = mActualChannel->SetRequestHeader(NS_LITERAL_CSTRING("CONTENT-TYPE"), mRequestContentType, false);
@@ -206,13 +201,14 @@ NS_IMETHODIMP hyDataChannel::OpenActualChannel() {
 /* readonly attribute ACString ContentType; */
 NS_IMETHODIMP hyDataChannel::GetContentType(nsACString & aContentType)
 {
-    return GetRequestContentType(aContentType);
+    return GetResponseContentType(aContentType);
 }
 
 /* attribute nsIURI URI; */
 NS_IMETHODIMP hyDataChannel::GetURI(nsIURI * *aURI)
 {
     *aURI = mURI;
+    NS_ADDREF(*aURI);
     return NS_OK;
 }
 
@@ -249,6 +245,7 @@ NS_IMETHODIMP hyDataChannel::SetRequestContentType(const nsACString & aRequestCo
 NS_IMETHODIMP hyDataChannel::GetRequestHeaders(hyIHttpHeaderFields * *aRequestHeaders)
 {
     *aRequestHeaders = mRequestHeaders;
+    NS_ADDREF(*aRequestHeaders);
     return NS_OK;
 }
 
@@ -287,6 +284,7 @@ NS_IMETHODIMP hyDataChannel::GetResponseContentType(nsACString & aResponseConten
 NS_IMETHODIMP hyDataChannel::GetResponseHeaders(hyIHttpHeaderFields * *aResponseHeaders)
 {
     *aResponseHeaders = mResponseHeaders;
+    NS_ADDREF(*aResponseHeaders);
     return NS_OK;
 }
 

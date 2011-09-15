@@ -21,6 +21,7 @@ CPPSRCS = \
 	hyChannelToStreamConverter.cpp \
 	hyHyshProtocolHandler.cpp \
 	hyNsChannelWrapper.cpp \
+	hyHttpHeaderCopier.cpp \
 	$(NULL)
 		
 EXTRA_DSO_LDOPTS += \

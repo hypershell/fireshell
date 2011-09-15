@@ -34,17 +34,8 @@ class NS_NO_VTABLE NS_SCRIPTABLE hyIHttpHeaderFields : public nsIHttpHeaderVisit
   /* ACString getValue (in ACString aKey); */
   NS_SCRIPTABLE NS_IMETHOD GetValue(const nsACString & aKey, nsACString & _retval NS_OUTPARAM) = 0;
 
-  /* ACString getKeyAt (in long aPos); */
-  NS_SCRIPTABLE NS_IMETHOD GetKeyAt(PRInt32 aPos, nsACString & _retval NS_OUTPARAM) = 0;
-
-  /* ACString getValueAt (in long aPos); */
-  NS_SCRIPTABLE NS_IMETHOD GetValueAt(PRInt32 aPos, nsACString & _retval NS_OUTPARAM) = 0;
-
   /* void acceptHeaderVisitor (in nsIHttpHeaderVisitor aVisitor); */
   NS_SCRIPTABLE NS_IMETHOD AcceptHeaderVisitor(nsIHttpHeaderVisitor *aVisitor) = 0;
-
-  /* readonly attribute long count; */
-  NS_SCRIPTABLE NS_IMETHOD GetCount(PRInt32 *aCount) = 0;
 
 };
 
@@ -53,26 +44,17 @@ class NS_NO_VTABLE NS_SCRIPTABLE hyIHttpHeaderFields : public nsIHttpHeaderVisit
 /* Use this macro when declaring classes that implement this interface. */
 #define NS_DECL_HYIHTTPHEADERFIELDS \
   NS_SCRIPTABLE NS_IMETHOD GetValue(const nsACString & aKey, nsACString & _retval NS_OUTPARAM); \
-  NS_SCRIPTABLE NS_IMETHOD GetKeyAt(PRInt32 aPos, nsACString & _retval NS_OUTPARAM); \
-  NS_SCRIPTABLE NS_IMETHOD GetValueAt(PRInt32 aPos, nsACString & _retval NS_OUTPARAM); \
-  NS_SCRIPTABLE NS_IMETHOD AcceptHeaderVisitor(nsIHttpHeaderVisitor *aVisitor); \
-  NS_SCRIPTABLE NS_IMETHOD GetCount(PRInt32 *aCount); 
+  NS_SCRIPTABLE NS_IMETHOD AcceptHeaderVisitor(nsIHttpHeaderVisitor *aVisitor); 
 
 /* Use this macro to declare functions that forward the behavior of this interface to another object. */
 #define NS_FORWARD_HYIHTTPHEADERFIELDS(_to) \
   NS_SCRIPTABLE NS_IMETHOD GetValue(const nsACString & aKey, nsACString & _retval NS_OUTPARAM) { return _to GetValue(aKey, _retval); } \
-  NS_SCRIPTABLE NS_IMETHOD GetKeyAt(PRInt32 aPos, nsACString & _retval NS_OUTPARAM) { return _to GetKeyAt(aPos, _retval); } \
-  NS_SCRIPTABLE NS_IMETHOD GetValueAt(PRInt32 aPos, nsACString & _retval NS_OUTPARAM) { return _to GetValueAt(aPos, _retval); } \
-  NS_SCRIPTABLE NS_IMETHOD AcceptHeaderVisitor(nsIHttpHeaderVisitor *aVisitor) { return _to AcceptHeaderVisitor(aVisitor); } \
-  NS_SCRIPTABLE NS_IMETHOD GetCount(PRInt32 *aCount) { return _to GetCount(aCount); } 
+  NS_SCRIPTABLE NS_IMETHOD AcceptHeaderVisitor(nsIHttpHeaderVisitor *aVisitor) { return _to AcceptHeaderVisitor(aVisitor); } 
 
 /* Use this macro to declare functions that forward the behavior of this interface to another object in a safe way. */
 #define NS_FORWARD_SAFE_HYIHTTPHEADERFIELDS(_to) \
   NS_SCRIPTABLE NS_IMETHOD GetValue(const nsACString & aKey, nsACString & _retval NS_OUTPARAM) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetValue(aKey, _retval); } \
-  NS_SCRIPTABLE NS_IMETHOD GetKeyAt(PRInt32 aPos, nsACString & _retval NS_OUTPARAM) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetKeyAt(aPos, _retval); } \
-  NS_SCRIPTABLE NS_IMETHOD GetValueAt(PRInt32 aPos, nsACString & _retval NS_OUTPARAM) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetValueAt(aPos, _retval); } \
-  NS_SCRIPTABLE NS_IMETHOD AcceptHeaderVisitor(nsIHttpHeaderVisitor *aVisitor) { return !_to ? NS_ERROR_NULL_POINTER : _to->AcceptHeaderVisitor(aVisitor); } \
-  NS_SCRIPTABLE NS_IMETHOD GetCount(PRInt32 *aCount) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetCount(aCount); } 
+  NS_SCRIPTABLE NS_IMETHOD AcceptHeaderVisitor(nsIHttpHeaderVisitor *aVisitor) { return !_to ? NS_ERROR_NULL_POINTER : _to->AcceptHeaderVisitor(aVisitor); } 
 
 #if 0
 /* Use the code below as a template for the implementation class for this interface. */
@@ -112,26 +94,8 @@ NS_IMETHODIMP hyHttpHeaderFields::GetValue(const nsACString & aKey, nsACString &
     return NS_ERROR_NOT_IMPLEMENTED;
 }
 
-/* ACString getKeyAt (in long aPos); */
-NS_IMETHODIMP hyHttpHeaderFields::GetKeyAt(PRInt32 aPos, nsACString & _retval NS_OUTPARAM)
-{
-    return NS_ERROR_NOT_IMPLEMENTED;
-}
-
-/* ACString getValueAt (in long aPos); */
-NS_IMETHODIMP hyHttpHeaderFields::GetValueAt(PRInt32 aPos, nsACString & _retval NS_OUTPARAM)
-{
-    return NS_ERROR_NOT_IMPLEMENTED;
-}
-
 /* void acceptHeaderVisitor (in nsIHttpHeaderVisitor aVisitor); */
 NS_IMETHODIMP hyHttpHeaderFields::AcceptHeaderVisitor(nsIHttpHeaderVisitor *aVisitor)
-{
-    return NS_ERROR_NOT_IMPLEMENTED;
-}
-
-/* readonly attribute long count; */
-NS_IMETHODIMP hyHttpHeaderFields::GetCount(PRInt32 *aCount)
 {
     return NS_ERROR_NOT_IMPLEMENTED;
 }

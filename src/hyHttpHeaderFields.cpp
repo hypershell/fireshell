@@ -15,41 +15,34 @@ hyHttpHeaderFields::~hyHttpHeaderFields()
 /* void setValue (in ACString aKey, in ACString aValue); */
 NS_IMETHODIMP hyHttpHeaderFields::SetValue(const nsACString & aKey, const nsACString & aValue)
 {
-    return NS_ERROR_NOT_IMPLEMENTED;
+    mHeaders[(nsCString)aKey] = aValue;
+    return NS_OK;
 }
 
 /* ACString getValue (in ACString aKey); */
 NS_IMETHODIMP hyHttpHeaderFields::GetValue(const nsACString & aKey, nsACString & _retval NS_OUTPARAM)
 {
-    return NS_ERROR_NOT_IMPLEMENTED;
-}
-
-/* readonly attribute long count; */
-NS_IMETHODIMP hyHttpHeaderFields::GetCount(PRInt32 *aCount)
-{
-    return NS_ERROR_NOT_IMPLEMENTED;
-}
-
-/* ACString getKeyAt (in long aPos); */
-NS_IMETHODIMP hyHttpHeaderFields::GetKeyAt(PRInt32 aPos, nsACString & _retval NS_OUTPARAM)
-{
-    return NS_ERROR_NOT_IMPLEMENTED;
-}
-
-/* ACString getValueAt (in long aPost); */
-NS_IMETHODIMP hyHttpHeaderFields::GetValueAt(PRInt32 aPos, nsACString & _retval NS_OUTPARAM)
-{
-    return NS_ERROR_NOT_IMPLEMENTED;
+    _retval = mHeaders[(nsCString)aKey];
+    return NS_OK;
 }
 
 /* void visitHeader (in ACString aHeader, in ACString aValue); */
 NS_IMETHODIMP hyHttpHeaderFields::VisitHeader(const nsACString & aHeader, const nsACString & aValue)
 {
-    return NS_ERROR_NOT_IMPLEMENTED;
+    return SetValue(aHeader, aValue);
 }
 
 /* void acceptHeaderVisitor (in nsIHttpHeaderVisitor aVisitor); */
 NS_IMETHODIMP hyHttpHeaderFields::AcceptHeaderVisitor(nsIHttpHeaderVisitor *aVisitor)
 {
-    return NS_ERROR_NOT_IMPLEMENTED;
+    nsresult rv;
+
+    for(typename std::map<nsCString, nsCString>::iterator it = mHeaders.begin();
+        it != mHeaders.end();
+        ++it)
+    {
+        rv = aVisitor->VisitHeader(it->first, it->second);
+        NS_ENSURE_SUCCESS(rv, rv);
+    }
+    return NS_OK;
 }
