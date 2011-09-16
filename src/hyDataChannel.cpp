@@ -66,11 +66,10 @@ NS_IMETHODIMP hyDataChannel::OpenChannel(hyIDataChannelListener *aListener, nsIS
     nsCOMPtr<nsIIOService> ioServ(do_GetIOService(&rv));
     NS_ENSURE_SUCCESS(rv, rv);
 
-    nsCOMPtr<nsIChannel> channel;
-    rv = ioServ->NewChannelFromURI(mURI, getter_AddRefs(channel));
+    rv = ioServ->NewChannelFromURI(mURI, getter_AddRefs(mActualChannel));
     NS_ENSURE_SUCCESS(rv, rv);
 
-    mActualChannel = do_QueryInterface(channel, &rv);
+    mActualHttpChannel = do_QueryInterface(mActualChannel, &rv);
     NS_ENSURE_SUCCESS(rv, rv);
 
     if(mMethod == "GET" || !mIncomingChannel) {
@@ -123,19 +122,38 @@ NS_IMETHODIMP hyDataChannel::OnDataAvailable
 /* void onStartRequest (in nsIRequest aRequest, in nsISupports aContext); */
 NS_IMETHODIMP hyDataChannel::OnStartRequest(nsIRequest *aRequest, nsISupports *aContext)
 {
+    nsresult rv;
+    rv = mActualChannel->GetContentType(mResponseContentType);
+    NS_ENSURE_SUCCESS(rv, rv);
+
     // Copy response headers to our header structure.
-    return mActualChannel->VisitResponseHeaders(mResponseHeaders);
+    rv = mActualHttpChannel->VisitResponseHeaders(mResponseHeaders);
+    NS_ENSURE_SUCCESS(rv, rv);
+
+    return mListener->OnDataOpen(mContext);
 }
 
 /* void onStopRequest (in nsIRequest aRequest, in nsISupports aContext, in nsresult aStatusCode); */
 NS_IMETHODIMP hyDataChannel::OnStopRequest(nsIRequest *aRequest, nsISupports *aContext, nsresult aStatusCode)
 {
-    return mListener->OnDataClose(mContext);
+    mClosedState = true;
+    nsresult rv;
+    rv = mListener->OnDataClose(mContext);
+
+    // release cyclic reference
+    mListener.forget();
+    mContext.forget();
+
+    return rv;
 }
 
 /* void onChannelConversionComplete (in nsIInputStream aStream, in unsigned long long aSize, in nsISupports aContext); */
 NS_IMETHODIMP hyDataChannel::OnChannelConversionComplete(nsIInputStream *aStream, PRUint64 aSize, nsISupports *aContext)
 {
+    if(!mOpeningState || mOpenedState) {
+        return NS_ERROR_FAILURE;
+    }
+
     if(!mHasUpload) {
         return NS_ERROR_FAILURE;
     }
@@ -149,7 +167,7 @@ NS_IMETHODIMP hyDataChannel::OnChannelConversionComplete(nsIInputStream *aStream
         NS_ENSURE_SUCCESS(rv, rv);
     }
 
-    nsCOMPtr<nsIUploadChannel> uploadChannel(do_QueryInterface(mActualChannel, &rv));
+    nsCOMPtr<nsIUploadChannel> uploadChannel(do_QueryInterface(mActualHttpChannel, &rv));
     NS_ENSURE_SUCCESS(rv, rv);
 
     rv = uploadChannel->SetUploadStream(aStream, mRequestContentType, aSize);
@@ -176,7 +194,7 @@ NS_IMETHODIMP hyDataChannel::ConvertResponseToRequest(hyIHttpHeaderFields *respo
 }
 
 NS_IMETHODIMP hyDataChannel::OpenActualChannel() {
-    if(mOpenedState) {
+    if(mOpenedState || !mOpeningState) {
         return NS_ERROR_FAILURE;
     }
     mOpenedState = true;
@@ -184,18 +202,23 @@ NS_IMETHODIMP hyDataChannel::OpenActualChannel() {
     nsresult rv;
     nsCOMPtr<hyHttpHeaderCopier> copier = new hyHttpHeaderCopier();
 
-    rv = copier->Init(mRequestHeaders, mActualChannel);
+    rv = copier->Init(mRequestHeaders, mActualHttpChannel);
     NS_ENSURE_SUCCESS(rv, rv);
 
     rv = copier->DoCopy();
     NS_ENSURE_SUCCESS(rv, rv);
 
     if(mRequestContentType != "") {
-        rv = mActualChannel->SetRequestHeader(NS_LITERAL_CSTRING("CONTENT-TYPE"), mRequestContentType, false);
+        rv = mActualHttpChannel->SetRequestHeader(NS_LITERAL_CSTRING("CONTENT-TYPE"), mRequestContentType, false);
         NS_ENSURE_SUCCESS(rv, rv);
     }
 
-    return mActualChannel->AsyncOpen(this, NULL);
+    if(mMethod != "") {
+        rv = mActualHttpChannel->SetRequestMethod(mMethod);
+        NS_ENSURE_SUCCESS(rv, rv);
+    }
+
+    return mActualHttpChannel->AsyncOpen(this, NULL);
 }
 
 /* readonly attribute ACString ContentType; */

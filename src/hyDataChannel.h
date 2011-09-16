@@ -35,9 +35,11 @@ public:
 
   NS_IMETHOD ConvertResponseToRequest(hyIHttpHeaderFields *response, hyIHttpHeaderFields **request);
 
-  NS_IMETHOD OpenActualChannel();
 
   hyDataChannel();
+
+protected:
+  NS_IMETHOD OpenActualChannel();
 
 private:
   ~hyDataChannel();
@@ -58,7 +60,8 @@ private:
   nsCOMPtr<nsISupports>             mContext;
   
   nsCOMPtr<hyIChannelToStreamConverter> mChannelConverter;
-  nsCOMPtr<nsIHttpChannel>          mActualChannel;
+  nsCOMPtr<nsIChannel>              mActualChannel;
+  nsCOMPtr<nsIHttpChannel>          mActualHttpChannel;
 
   bool mOpeningState;
   bool mOpenedState;

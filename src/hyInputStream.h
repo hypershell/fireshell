@@ -23,6 +23,9 @@ private:
 
   std::vector< nsCOMPtr<hyIDataBuffer> > mBufferList;
   
+  /*
+   * Offset of buffers that have been read
+   */
   PRUint64  mReadSize;
   PRUint64  mCachedSize;
 };

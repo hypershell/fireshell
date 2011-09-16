@@ -31,6 +31,14 @@ NS_IMETHODIMP hyChannelToStreamConverter::ConvertChannel(hyIDataChannel *aChanne
     return aChannel->OpenChannel(this, NULL);
 }
 
+/* void onDataOpen (in nsISupports aContext); */
+NS_IMETHODIMP hyChannelToStreamConverter::OnDataOpen(nsISupports *aContext)
+{
+    // ignore
+    return NS_OK;
+}
+
+
 /* void onDataReceive (in hyIDataBuffer aBuffer, in nsISupports aContext); */
 NS_IMETHODIMP hyChannelToStreamConverter::OnDataReceive(hyIDataBuffer *aBuffer, nsISupports *aContext)
 {

@@ -22,6 +22,7 @@ CPPSRCS = \
 	hyHyshProtocolHandler.cpp \
 	hyNsChannelWrapper.cpp \
 	hyHttpHeaderCopier.cpp \
+	hyPipelineDataChannel.cpp \
 	$(NULL)
 		
 EXTRA_DSO_LDOPTS += \

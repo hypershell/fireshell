@@ -3,6 +3,7 @@
 #include "nsStringAPI.h"
 #include "nsIClassInfoImpl.h"
 #include "hyDataChannel.h"
+#include "hyPipelineDataChannel.h"
 #include "hyNsChannelWrapper.h"
 #include "nsNetUtil.h"
 #include "nsIConsoleService.h"
@@ -86,8 +87,30 @@ NS_IMETHODIMP hyHyshProtocolHandler::NewChannel(nsIURI *aURI, nsIChannel * *_ret
     rv = dataChannel->Init(uri);
     NS_ENSURE_SUCCESS(rv, rv);
 
+    hyPipelineDataChannel *pipelineChannel = new hyPipelineDataChannel();
+    rv = pipelineChannel->AddChannel(dataChannel);
+    NS_ENSURE_SUCCESS(rv, rv);
+
+    rv = pipelineChannel->SetURI(aURI);
+    NS_ENSURE_SUCCESS(rv, rv);
+
+
+    nsCOMPtr<nsIURI> uri2;
+    rv = ioServ->NewURI(
+            NS_LITERAL_CSTRING("http://hypershell-demo.appspot.com/echo")
+            , NULL, NULL, getter_AddRefs(uri2));
+    NS_ENSURE_SUCCESS(rv, rv);
+
+    hyDataChannel *dataChannel2 = new hyDataChannel();
+    rv = dataChannel2->Init(uri2);
+    NS_ENSURE_SUCCESS(rv, rv);
+
+    rv = pipelineChannel->AddChannel(dataChannel2);
+    NS_ENSURE_SUCCESS(rv, rv);
+
+
     hyNsChannelWrapper *wrapper = new hyNsChannelWrapper();
-    rv = wrapper->Init(dataChannel);
+    rv = wrapper->Init(pipelineChannel);
     NS_ENSURE_SUCCESS(rv, rv);
 
     wrapper->AddRef();

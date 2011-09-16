@@ -98,7 +98,7 @@ NS_IMETHODIMP hyInputStream::Read(char *aBuf, PRUint32 aCount, PRUint32 *_retval
         if(totalSize + bufferSize > mReadSize) {
             if(totalSize < mReadSize) {
                 PRUint64 difference = mReadSize - totalSize;
-                *rawBuffer += difference;
+                rawBuffer += difference;
                 bufferSize -= difference;
             }
 
@@ -113,15 +113,44 @@ NS_IMETHODIMP hyInputStream::Read(char *aBuf, PRUint32 aCount, PRUint32 *_retval
         totalSize += bufferSize;
     }
 
-    mReadSize += totalSize;
-    *_retval = mReadSize;
+    mReadSize = totalSize;
+    *_retval = totalReadSize;
     return NS_OK;
 }
 
 /* [noscript] unsigned long readSegments (in nsWriteSegmentFun aWriter, in voidPtr aClosure, in unsigned long aCount); */
 NS_IMETHODIMP hyInputStream::ReadSegments(nsWriteSegmentFun aWriter, void *aClosure, PRUint32 aCount, PRUint32 *_retval NS_OUTPARAM)
 {
-    return NS_ERROR_NOT_IMPLEMENTED;
+    if(mBufferList.size() == 0) {
+        return NS_OK;
+    }
+
+    nsresult    rv;
+    hyIDataBuffer  *buffer;
+    char       *rawBuffer;
+    PRUint64    bufferSize;
+    PRUint32    currentRead;
+    PRUint64    totalRead = 0;
+
+    for(_buffer_iterator_type it = mBufferList.begin();
+            it != mBufferList.end();
+            ++it)
+    {
+        buffer = *it;
+        rv = buffer->GetBuffer(&rawBuffer);
+        NS_ENSURE_SUCCESS(rv, rv);
+
+        rv = buffer->GetSize(&bufferSize);
+        NS_ENSURE_SUCCESS(rv, rv);
+
+        rv = aWriter(this, aClosure, rawBuffer, totalRead, bufferSize, &currentRead);
+        NS_ENSURE_SUCCESS(rv, rv);
+
+        totalRead += currentRead;
+    }
+
+    *_retval = totalRead;
+    return NS_OK;
 }
 
 /* boolean isNonBlocking (); */

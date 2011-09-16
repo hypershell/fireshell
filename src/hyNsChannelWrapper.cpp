@@ -33,7 +33,6 @@ NS_IMETHODIMP hyNsChannelWrapper::GetOriginalURI(nsIURI * *aOriginalURI)
 }
 NS_IMETHODIMP hyNsChannelWrapper::SetOriginalURI(nsIURI *aOriginalURI)
 {
-    return NS_ERROR_NOT_IMPLEMENTED;
     mOriginalURI = aOriginalURI;
     return NS_OK;
 }
@@ -205,19 +204,26 @@ NS_IMETHODIMP hyNsChannelWrapper::SetLoadFlags(nsLoadFlags aLoadFlags)
     return NS_OK;
 }
 
+/* void onDataOpen (in nsISupports aContext); */
+NS_IMETHODIMP hyNsChannelWrapper::OnDataOpen(nsISupports *aContext)
+{
+    if(!mOpeningState || mOpenedState) {
+        return NS_ERROR_FAILURE;
+    }
+
+    mOpenedState = true;
+    return mListener->OnStartRequest(this, mContext);
+    return NS_OK;
+}
+
 /* void onDataReceive (in hyIDataBuffer aBuffer, in nsISupports aContext); */
 NS_IMETHODIMP hyNsChannelWrapper::OnDataReceive(hyIDataBuffer *aBuffer, nsISupports *aContext)
 {
-    if(!mOpeningState) {
+    if(!mOpenedState || mClosedState) {
         return NS_ERROR_FAILURE;
     }
 
     nsresult rv;
-
-    if(!mOpenedState) {
-        mOpenedState = true;
-        mListener->OnStartRequest(this, mContext);
-    }
 
     nsCOMPtr<hyInputStream> stream = new hyInputStream();
 
