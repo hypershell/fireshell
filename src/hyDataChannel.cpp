@@ -179,8 +179,8 @@ NS_IMETHODIMP hyDataChannel::OnChannelConversionComplete(nsIInputStream *aStream
         nsCOMPtr<hyIHttpHeaderFields> responseHeaders;
         incomingHttpChannel->GetResponseHeaders(getter_AddRefs(responseHeaders));
 
-        rv = ConvertResponseToRequest(responseHeaders, getter_AddRefs(mRequestHeaders));
-        NS_ENSURE_SUCCESS(rv, rv);
+        //rv = ConvertResponseToRequest(responseHeaders, getter_AddRefs(mRequestHeaders));
+        //NS_ENSURE_SUCCESS(rv, rv);
     }
 
     return OpenActualChannel();
@@ -188,7 +188,7 @@ NS_IMETHODIMP hyDataChannel::OnChannelConversionComplete(nsIInputStream *aStream
 
 NS_IMETHODIMP hyDataChannel::ConvertResponseToRequest(hyIHttpHeaderFields *response, hyIHttpHeaderFields **request) {
     // TODO: Do some filtering and copying of different headers
-    *request = response;
+    //*request = response;
 
     return NS_OK;
 }

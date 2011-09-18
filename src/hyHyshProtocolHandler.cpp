@@ -9,10 +9,50 @@
 #include "nsIConsoleService.h"
 #include "nsIComponentManager.h"
 #include <string>
+#include <list>
 
 NS_IMPL_ISUPPORTS1(hyHyshProtocolHandler, nsIProtocolHandler)
 NS_IMPL_CLASSINFO(hyHyshProtocolHandler, NULL, 0, HY_HYSHPROTOCOLHANDLER_CID)
 NS_IMPL_CI_INTERFACE_GETTER1(hyHyshProtocolHandler, nsIProtocolHandler)
+
+nsCString do_Substring(const nsACString& str, PRUint32 begin, PRUint32 end) {
+    const nsACString& temp = Substring(str, begin, end);
+    nsCString result(temp);
+
+    return result;
+}
+
+nsCString do_ParseString(nsCString str) {
+    str.Trim("%20");
+    return str;
+}
+
+std::list<nsCString> do_SplitString(const nsACString& str, char separator) {
+    std::list<nsCString> result;
+
+    const char* current = str.BeginReading();
+    const char* end = str.EndReading();
+    int startPos = 0;
+    int endPos = 0;
+
+    while(current != end) {
+        if(*current == separator) {
+            int length = endPos - startPos;
+            result.push_back(do_ParseString(do_Substring(str, startPos, length)));
+           
+            startPos = endPos + 1;
+        }
+
+        ++current;
+        ++endPos;
+    }
+
+    if(startPos != endPos) {
+        result.push_back(do_ParseString(do_Substring(str, startPos, endPos)));
+    }
+
+    return result;
+}
 
 hyHyshProtocolHandler::hyHyshProtocolHandler()
 {
@@ -71,43 +111,36 @@ NS_IMETHODIMP hyHyshProtocolHandler::NewChannel(nsIURI *aURI, nsIChannel * *_ret
     rv = aURI->GetSpec(rawURI);
     NS_ENSURE_SUCCESS(rv, rv);
 
-    const nsACString& rawURIList = Substring(rawURI, 7, rawURI.Length());
+    std::string rawURIStr(PromiseFlatCString(rawURI).get());
+    rawURIStr.substr(7, rawURIStr.length());
+    
+    nsCString rawURIList = do_Substring(rawURI, 7, rawURI.Length());
 
-    std::string uriStr(PromiseFlatString(rawURIList));
+    rawURIList.Trim("%20");
 
+    std::list<nsCString> URIList = do_SplitString(rawURIList, '|');
+    
     nsCOMPtr<nsIIOService> ioServ(do_GetIOService(&rv));
-    NS_ENSURE_SUCCESS(rv, rv);
-    //return ioServ->NewChannel(rawURIList, NULL, NULL, _retval);
-
-    nsCOMPtr<nsIURI> uri;
-    rv = ioServ->NewURI(rawURIList, NULL, NULL, getter_AddRefs(uri));
-    NS_ENSURE_SUCCESS(rv, rv);
-
-    hyDataChannel *dataChannel = new hyDataChannel();
-    rv = dataChannel->Init(uri);
     NS_ENSURE_SUCCESS(rv, rv);
 
     hyPipelineDataChannel *pipelineChannel = new hyPipelineDataChannel();
-    rv = pipelineChannel->AddChannel(dataChannel);
-    NS_ENSURE_SUCCESS(rv, rv);
 
     rv = pipelineChannel->SetURI(aURI);
     NS_ENSURE_SUCCESS(rv, rv);
 
+    for(auto it = URIList.begin(); it != URIList.end(); ++it) {
+        nsCOMPtr<nsIURI> uri;
+        rv = ioServ->NewURI(*it, NULL, NULL, getter_AddRefs(uri));
+        NS_ENSURE_SUCCESS(rv, rv);
+        
 
-    nsCOMPtr<nsIURI> uri2;
-    rv = ioServ->NewURI(
-            NS_LITERAL_CSTRING("http://hypershell-demo.appspot.com/echo")
-            , NULL, NULL, getter_AddRefs(uri2));
-    NS_ENSURE_SUCCESS(rv, rv);
+        hyDataChannel *dataChannel = new hyDataChannel();
+        rv = dataChannel->Init(uri);
+        NS_ENSURE_SUCCESS(rv, rv);
 
-    hyDataChannel *dataChannel2 = new hyDataChannel();
-    rv = dataChannel2->Init(uri2);
-    NS_ENSURE_SUCCESS(rv, rv);
-
-    rv = pipelineChannel->AddChannel(dataChannel2);
-    NS_ENSURE_SUCCESS(rv, rv);
-
+        rv = pipelineChannel->AddChannel(dataChannel);
+        NS_ENSURE_SUCCESS(rv, rv);
+    }
 
     hyNsChannelWrapper *wrapper = new hyNsChannelWrapper();
     rv = wrapper->Init(pipelineChannel);
@@ -126,3 +159,4 @@ NS_IMETHODIMP hyHyshProtocolHandler::AllowPort(PRInt32 port, const char * scheme
     *_retval = false;
     return NS_OK;
 }
+

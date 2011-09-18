@@ -76,7 +76,7 @@ NS_IMETHODIMP hyInputStream::Available(PRUint32 *_retval NS_OUTPARAM)
 NS_IMETHODIMP hyInputStream::Read(char *aBuf, PRUint32 aCount, PRUint32 *_retval NS_OUTPARAM)
 {
     nsresult rv;
-    PRUint64 bufferSize;
+    PRUint64 bufferSize, originalBufferSize;
     hyIDataBuffer *buffer;
     char *rawBuffer;
 
@@ -85,12 +85,14 @@ NS_IMETHODIMP hyInputStream::Read(char *aBuf, PRUint32 aCount, PRUint32 *_retval
     PRUint64 max = aCount;
     
     for(_buffer_iterator_type it = mBufferList.begin();
-        it != mBufferList.end();
+        it != mBufferList.end() && (totalReadSize < max);
         ++it)
     {
         buffer = *it;
         rv = buffer->GetSize(&bufferSize);
         NS_ENSURE_SUCCESS(rv, rv);
+
+        originalBufferSize = bufferSize;
 
         rv = buffer->GetBuffer(&rawBuffer);
         NS_ENSURE_SUCCESS(rv, rv);
@@ -110,10 +112,10 @@ NS_IMETHODIMP hyInputStream::Read(char *aBuf, PRUint32 aCount, PRUint32 *_retval
             aBuf += bufferSize;
             totalReadSize += bufferSize;
         }
-        totalSize += bufferSize;
+        totalSize += originalBufferSize;
     }
 
-    mReadSize = totalSize;
+    mReadSize += totalReadSize;
     *_retval = totalReadSize;
     return NS_OK;
 }
