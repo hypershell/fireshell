@@ -1,0 +1,10 @@
+#include "nsISupports.idl"
+#include "hyIDataChannel.idl"
+#include "hyIHttpsRequestChannelListener.idl"
+
+[scriptable, uuid(a5a205eb-98ad-48f5-bc48-58afb0f11f50)]
+interface hyISSLChannel {
+    void openSSLChannel(
+        in hyISSLChannelListener aListener,
+        in nsISupports aContext);
+};

@@ -4,6 +4,7 @@
 #include "nsILoadGroup.h"
 #include "nsIInterfaceRequestor.h"
 #include "hyIDataChannel.h"
+#include "hyIHttpChannel.h"
 #include "hyIDataChannelListener.h"
 #include "hyIDataBuffer.h"
 #include "nsCOMPtr.h"
@@ -27,6 +28,7 @@ private:
   ~hyNsChannelWrapper();
 
   nsCOMPtr<hyIDataChannel>      mChannel;
+  nsCOMPtr<hyIHttpChannel>      mHttpChannel;
   nsCOMPtr<nsIStreamListener>   mListener;
   nsCOMPtr<nsISupports>         mContext;
   nsCOMPtr<nsILoadGroup>        mLoadGroup;

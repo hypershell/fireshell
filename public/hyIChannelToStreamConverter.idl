@@ -5,6 +5,8 @@
 [scriptable, uuid(49f93688-d321-4825-ba94-f94c3739d2c4)]
 interface hyIChannelToStreamConverter : nsISupports
 {
-  void convertChannel(in hyIDataChannel aChannel, 
-        in hyIChannelToStreamConverterListener aListener, in nsISupports aContext);
+  void convertChannel(
+        in hyIDataChannel aChannel, 
+        in hyIChannelToStreamConverterListener aListener, 
+        in nsISupports aContext);
 };

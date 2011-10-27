@@ -1,0 +1,10 @@
+#include "nsISupports.idl"
+#include "hyIHttpResponseChannel.idl"
+
+[scriptable, uuid(99aec805-d150-46b4-ac8a-d07435411d76)]
+interface hyIHttpHandlerListener : nsISupports
+{
+    void onOutputHttpChannelReady(
+        in hyIHttpResponseChannel aResponseChannel,
+        in nsISupports aContext);
+};

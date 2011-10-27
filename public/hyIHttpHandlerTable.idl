@@ -1,0 +1,11 @@
+#include "nsISupports.idl"
+#include "hyIHttpHandlerFactory.idl"
+
+[scriptable, uuid(a35db779-bcce-4682-8b5a-5b24584b50cf)]
+interface hyIHttpHandlerTable : nsISupports {
+    hyIHttpHandlerFactory getHttpHandlerFactory(in ACString aPath);
+
+    void registerHttpHandlerFactory(
+            in ACString aPath, 
+            in hyIHttpHandlerFactory aFactory);
+};

@@ -1,0 +1,11 @@
+#include "nsISupports.idl"
+
+[scriptable, uuid(fa9f2917-2256-496c-9663-8aca31ce283c)]
+interface hyIHttpRequest {
+    readonly attribute ACString             requestHttpVersion;
+    readonly attribute nsIURI               requestURI;
+    readonly attribute ACString           requestMethod;
+    readonly attribute ACString           requestHost;
+    readonly attribute ACString           requestContentType;
+    readonly attribute hyIHttpHeaderFields  requestHeaders;
+};

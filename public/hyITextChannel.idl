@@ -1,0 +1,8 @@
+#include "nsISupports.idl"
+#include "hyITextHttpChannelListener.idl"
+
+[scriptable, uuid(3d1f7577-b5d5-45a9-9901-15590a8b4723)]
+interface hyITextChannel : nsISupports
+{
+  void openTextHttpChannel(in hyITextHttpChannelListener aListener, in nsISupports aContext);
+};

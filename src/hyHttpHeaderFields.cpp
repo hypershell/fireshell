@@ -15,14 +15,18 @@ hyHttpHeaderFields::~hyHttpHeaderFields()
 /* void setValue (in ACString aKey, in ACString aValue); */
 NS_IMETHODIMP hyHttpHeaderFields::SetValue(const nsACString & aKey, const nsACString & aValue)
 {
-    mHeaders[(nsCString)aKey] = aValue;
+    nsCString key;
+    ToUpperCase(aKey, key);
+    mHeaders[key] = aValue;
     return NS_OK;
 }
 
 /* ACString getValue (in ACString aKey); */
 NS_IMETHODIMP hyHttpHeaderFields::GetValue(const nsACString & aKey, nsACString & _retval NS_OUTPARAM)
 {
-    _retval = mHeaders[(nsCString)aKey];
+    nsCString key;
+    ToUpperCase(aKey, key);
+    _retval = mHeaders[key];
     return NS_OK;
 }
 

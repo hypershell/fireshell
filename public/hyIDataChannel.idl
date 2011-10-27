@@ -5,9 +5,36 @@
 [scriptable, uuid(daf65c28-7bcf-44e4-898c-3b5e64fc02a9)]
 interface hyIDataChannel : nsISupports
 {
-  void setIncomingChannel(in hyIDataChannel aChannel);
-  void openChannel(in hyIDataChannelListener aListener, in nsISupports aContext);
+  void openDataChannel(
+          in hyIDataChannelListener aListener, 
+          in nsISupports aContext,
+          in unsigned long aOffset);
 
-  readonly attribute ACString ContentType;
-  readonly attribute nsIURI URI;
+  /*
+   * peekDataChannel() is almost the same as openDataChannel()
+   * except that the buffer is retained within the channel and 
+   * can be re-opened/re-peeked again. Even though the channel 
+   * can be peeked multiple times, only one peek is allowed to
+   * happen on any time, i.e. either stopPeek() must be called 
+   * or the listener's onDataClose() must have been called 
+   * before another peek can be called. It is an error to peek
+   * after openDataChannel() is called, as this is to optimize 
+   * the open() method so that buffers can be freed as soon as
+   * they are consumed.
+   */
+  void peek(
+          in hyIDataChannelListener aListener,
+          in nsISupports aContext,
+          in unsigned long aOffset);
+
+  /*
+   * Stop the peeking action on the channel. The channel will
+   * stop reading in further data until another peek/open happens.
+   */
+  void stopPeek();
+
+  /*
+   * Closes the data channel before the entire stream is read.
+   */
+  void closeDataChannel();
 };

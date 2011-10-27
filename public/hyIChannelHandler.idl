@@ -1,0 +1,11 @@
+#include "nsISupports.idl"
+#include "hyIChannelHandlerListener.idl"
+
+[scriptable, uuid(c3b98313-f223-4f71-a864-543c3ddc2889)]
+interface hyIChannelHandler : nsISupports
+{
+    void acceptInputChannel(
+            in hyIDataChannel aInputChannel, 
+            in hyIChannelHandlerListener aListener,
+            in nsISupports aContext);
+};

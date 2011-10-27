@@ -1,0 +1,10 @@
+#include "nsISupports.idl"
+#include "hyIDataChannel.idl"
+
+[scriptable, uuid(c14a3c5a-7036-4298-8000-191e0cdf750e)]
+interface hyIDataChannelHandlerListener : nsISupports
+{
+    void onOutputDataChannelReady(
+        in hyIDataChannel aOutputChannel, 
+        in nsISupports aContext);
+};

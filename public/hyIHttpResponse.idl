@@ -1,0 +1,10 @@
+#include "nsISupports.idl"
+
+[scriptable, uuid(7f5612e4-1358-4f8c-a0e6-b4ddc5942b97)]
+interface hyIHttpResponse {
+    readonly attribute ACString             responseHttpVersion;
+    readonly attribute unsigned long        responseStatusCode;
+    readonly attribute ACString             responseStatusMessage;
+    readonly attribute ACString             responseContentType;
+    readonly attribute hyIHttpHeaderFields  responseHeaders;
+};

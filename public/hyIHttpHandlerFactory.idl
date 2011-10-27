@@ -1,0 +1,7 @@
+#include "nsISupports.idl"
+#include "hyIHttpHandler.idl"
+
+[scriptable, uuid(cd2530da-d5f0-4fcf-af31-812d17a4d631)]
+interface hyIHttpHandlerFactory : nsISupports {
+    hyIHttpHandler createHttpHandler();
+};

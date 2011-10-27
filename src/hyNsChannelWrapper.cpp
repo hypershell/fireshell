@@ -1,5 +1,6 @@
 #include "hyNsChannelWrapper.h"
 #include "hyInputStream.h"
+#include "nsNetUtil.h"
 
 NS_IMPL_ISUPPORTS2(hyNsChannelWrapper, nsIChannel, hyIDataChannelListener)
 
@@ -21,15 +22,20 @@ hyNsChannelWrapper::~hyNsChannelWrapper()
 NS_IMETHODIMP hyNsChannelWrapper::Init(hyIDataChannel *channel) 
 {
     mChannel = channel;
+    mHttpChannel = do_QueryInterface(mChannel);
     return NS_OK;
 }
 
 /* attribute nsIURI originalURI; */
 NS_IMETHODIMP hyNsChannelWrapper::GetOriginalURI(nsIURI * *aOriginalURI)
 {
-    *aOriginalURI = mOriginalURI;
-    NS_IF_ADDREF(*aOriginalURI);
-    return NS_OK;
+    if(mOriginalURI) {
+        *aOriginalURI = mOriginalURI;
+        NS_IF_ADDREF(*aOriginalURI);
+        return NS_OK;
+    } else {
+        return mChannel->GetURI(aOriginalURI);
+    }
 }
 NS_IMETHODIMP hyNsChannelWrapper::SetOriginalURI(nsIURI *aOriginalURI)
 {
@@ -250,17 +256,51 @@ NS_IMETHODIMP hyNsChannelWrapper::OnDataClose(nsISupports *aContext)
 /* readonly attribute unsigned long contentDisposition; */
 NS_IMETHODIMP hyNsChannelWrapper::GetContentDisposition(PRUint32 *aContentDisposition)
 {
-    return NS_ERROR_NOT_AVAILABLE;
+    if(mHttpChannel) {
+        nsresult rv;
+        nsCString header;
+
+        rv = GetContentDispositionHeader(header);
+        NS_ENSURE_SUCCESS(rv, rv);
+
+        *aContentDisposition = NS_GetContentDispositionFromHeader(header, this);
+        return NS_OK;
+    } else {
+        return NS_ERROR_NOT_AVAILABLE;
+    }
 }
 
 /* readonly attribute AString contentDispositionFilename; */
 NS_IMETHODIMP hyNsChannelWrapper::GetContentDispositionFilename(nsAString & aContentDispositionFilename)
 {
-    return NS_ERROR_NOT_AVAILABLE;
+    if(mHttpChannel) {
+        nsresult rv;
+        nsCString header;
+
+        rv = GetContentDispositionHeader(header);
+        NS_ENSURE_SUCCESS(rv, rv);
+
+        nsCOMPtr<nsIURI> uri;
+        rv = mChannel->GetURI(getter_AddRefs(uri));
+        NS_ENSURE_SUCCESS(rv, rv);
+
+        return NS_GetFilenameFromDisposition(aContentDispositionFilename, header, uri);
+    } else {
+        return NS_ERROR_NOT_AVAILABLE;
+    }
 }
 
 /* readonly attribute ACString contentDispositionHeader; */
 NS_IMETHODIMP hyNsChannelWrapper::GetContentDispositionHeader(nsACString & aContentDispositionHeader)
 {
-    return NS_ERROR_NOT_AVAILABLE;
+    if(mHttpChannel) {
+        nsresult rv;
+        nsCOMPtr<hyIHttpHeaderFields> headers;
+        rv = mHttpChannel->GetResponseHeaders(getter_AddRefs(headers));
+        NS_ENSURE_SUCCESS(rv, rv);
+
+        return headers->GetValue(NS_LITERAL_CSTRING("CONTENT-DISPOSITION"), aContentDispositionHeader);
+    } else {
+        return NS_ERROR_NOT_AVAILABLE;
+    }
 }

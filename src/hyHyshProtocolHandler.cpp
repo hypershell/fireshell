@@ -1,4 +1,5 @@
 
+
 #include "hyHyshProtocolHandler.h"
 #include "nsStringAPI.h"
 #include "nsIClassInfoImpl.h"
@@ -23,6 +24,8 @@ nsCString do_Substring(const nsACString& str, PRUint32 begin, PRUint32 end) {
 }
 
 nsCString do_ParseString(nsCString str) {
+    //nsCString newStr;
+    //NS_UnescapeURL(str, esc_OnlyNonASCII, newStr);
     str.Trim("%20");
     return str;
 }
@@ -81,16 +84,23 @@ NS_IMETHODIMP hyHyshProtocolHandler::GetDefaultPort(PRInt32 *aDefaultPort)
 /* readonly attribute unsigned long protocolFlags; */
 NS_IMETHODIMP hyHyshProtocolHandler::GetProtocolFlags(PRUint32 *aProtocolFlags)
 {
-    *aProtocolFlags = URI_STD;
+    *aProtocolFlags = URI_STD & URI_LOADABLE_BY_ANYONE & URI_INHERITS_SECURITY_CONTEXT;
     return NS_OK;
 }
 
 /* nsIURI newURI (in AUTF8String aSpec, in string aOriginCharset, in nsIURI aBaseURI); */
 NS_IMETHODIMP hyHyshProtocolHandler::NewURI(const nsACString & aSpec, const char * aOriginCharset, nsIURI *aBaseURI, nsIURI * *_retval NS_OUTPARAM)
 {
+    if(aBaseURI) {
+        *_retval = aBaseURI;
+        NS_ADDREF(*_retval);
+        return NS_OK;
+    }
+
     nsresult rv;
     nsCOMPtr<nsIURI> uri;
 
+    nsCString spec(aSpec);
     uri = do_CreateInstance("@mozilla.org/network/simple-uri;1", &rv);
     NS_ENSURE_SUCCESS(rv, rv);
     

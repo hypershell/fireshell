@@ -1,0 +1,15 @@
+#include "nsISupports.idl"
+
+[scriptable, uuid(7a269047-85ac-4e27-a7d1-5a8996d1d7d0)]
+interface hyIHttpResponseChannelListener {
+    void onHttpResponseReady(
+        in hyIHttpResponse aResponse,
+        
+        /* 
+         * This carries the actual HTTP content other than 
+         * the header part.
+         */
+        in hyIDataChannel aRawChannel, 
+
+        in nsISupports aContext);
+};

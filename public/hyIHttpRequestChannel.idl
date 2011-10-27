@@ -1,0 +1,32 @@
+#include "nsISupports.idl"
+#include "hyIHttpRequestChannelListener.idl"
+
+/*
+ * This represents a fully decoded HTTP channel that does not
+ * have any encoding-related header such as compression and chunked 
+ * transfer encoding. The HTTP channel must also not show such 
+ * encoding-related headers in the header fields.
+ */
+[scriptable, uuid(27d16aa7-350f-45ef-a7a9-82c5c60de19f)]
+interface hyIHttpRequestChannel : nsISupports {
+    void openHttpRequestChannel(
+        in hyIHttpRequestChannelListener aListener,
+        in nsISupports aContext
+    );
+};
+
+/*
+ * This represents a raw HTTP channel that may need to be decoded 
+ * based on the encoding information in the HTTP header. The raw
+ * data channel for the request body should not be convertible to 
+ * other content types if it happens to be encoded, as it will cause
+ * inconsistent data representation.
+ */
+[scriptable, uuid(6cc0ede6-6b05-46cf-b406-d5b96a9d2670)]
+interface hyIRawHttpRequestChannel : nsISupports {
+    void openHttpRequestChannel(
+        in hyIHttpRequestChannelListener aListener,
+        in nsISupports aContext
+    );
+};
+

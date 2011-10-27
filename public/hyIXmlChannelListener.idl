@@ -1,0 +1,17 @@
+#include "nsISupports.idl"
+#include "nsIDOMDocument.idl"
+#include "hyIDataChannelListener.idl"
+
+[scriptable, uuid(7229aaa0-9777-4b86-bcd9-bcf6a0b5e6e2)]
+interface hyIXmlChannelListener : nsISupports
+{
+  void onXmlDataReceive(in nsIDOMDocument aDocument, in nsISupports aContext);
+  
+  /*
+   * If the incoming data is not in XML format then the listener has
+   * to return a raw data channel listener to receive the raw data.
+   * This includes the data buffers that has been received by the
+   * XmlHttpChannel so far.
+   */
+  hyIDataChannelListener onInvalidXmlData(in nsISupports aContext);
+};

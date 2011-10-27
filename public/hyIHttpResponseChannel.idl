@@ -1,0 +1,18 @@
+#include "nsISupports.idl"
+#include "hyIHttpResponseChannelListener.idl"
+
+[scriptable, uuid(0036985f-3f47-495f-ab6d-facdaa12e1cb)]
+interface hyIHttpResponseChannel {
+    void openHttpResponseChannel(
+        in hyIHttpResponseChannelListener aListener,
+        in nsISupports aContext
+    );
+};
+
+[scriptable, uuid(3b8169ea-203f-4886-9939-6f9382ec9942)]
+interface hyIRawHttpResponseChannel {
+    void openHttpResponseChannel(
+        in hyIHttpResponseChannelListener aListener,
+        in nsISupports aContext
+    );
+};
