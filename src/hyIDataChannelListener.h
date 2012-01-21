@@ -31,9 +31,6 @@ class NS_NO_VTABLE NS_SCRIPTABLE hyIDataChannelListener : public nsISupports {
 
   NS_DECLARE_STATIC_IID_ACCESSOR(HYIDATACHANNELLISTENER_IID)
 
-  /* void onDataOpen (in nsISupports aContext); */
-  NS_SCRIPTABLE NS_IMETHOD OnDataOpen(nsISupports *aContext) = 0;
-
   /* void onDataReceive (in hyIDataBuffer aBuffer, in nsISupports aContext); */
   NS_SCRIPTABLE NS_IMETHOD OnDataReceive(hyIDataBuffer *aBuffer, nsISupports *aContext) = 0;
 
@@ -46,19 +43,16 @@ class NS_NO_VTABLE NS_SCRIPTABLE hyIDataChannelListener : public nsISupports {
 
 /* Use this macro when declaring classes that implement this interface. */
 #define NS_DECL_HYIDATACHANNELLISTENER \
-  NS_SCRIPTABLE NS_IMETHOD OnDataOpen(nsISupports *aContext); \
   NS_SCRIPTABLE NS_IMETHOD OnDataReceive(hyIDataBuffer *aBuffer, nsISupports *aContext); \
   NS_SCRIPTABLE NS_IMETHOD OnDataClose(nsISupports *aContext); 
 
 /* Use this macro to declare functions that forward the behavior of this interface to another object. */
 #define NS_FORWARD_HYIDATACHANNELLISTENER(_to) \
-  NS_SCRIPTABLE NS_IMETHOD OnDataOpen(nsISupports *aContext) { return _to OnDataOpen(aContext); } \
   NS_SCRIPTABLE NS_IMETHOD OnDataReceive(hyIDataBuffer *aBuffer, nsISupports *aContext) { return _to OnDataReceive(aBuffer, aContext); } \
   NS_SCRIPTABLE NS_IMETHOD OnDataClose(nsISupports *aContext) { return _to OnDataClose(aContext); } 
 
 /* Use this macro to declare functions that forward the behavior of this interface to another object in a safe way. */
 #define NS_FORWARD_SAFE_HYIDATACHANNELLISTENER(_to) \
-  NS_SCRIPTABLE NS_IMETHOD OnDataOpen(nsISupports *aContext) { return !_to ? NS_ERROR_NULL_POINTER : _to->OnDataOpen(aContext); } \
   NS_SCRIPTABLE NS_IMETHOD OnDataReceive(hyIDataBuffer *aBuffer, nsISupports *aContext) { return !_to ? NS_ERROR_NULL_POINTER : _to->OnDataReceive(aBuffer, aContext); } \
   NS_SCRIPTABLE NS_IMETHOD OnDataClose(nsISupports *aContext) { return !_to ? NS_ERROR_NULL_POINTER : _to->OnDataClose(aContext); } 
 
@@ -92,12 +86,6 @@ hyDataChannelListener::hyDataChannelListener()
 hyDataChannelListener::~hyDataChannelListener()
 {
   /* destructor code */
-}
-
-/* void onDataOpen (in nsISupports aContext); */
-NS_IMETHODIMP hyDataChannelListener::OnDataOpen(nsISupports *aContext)
-{
-    return NS_ERROR_NOT_IMPLEMENTED;
 }
 
 /* void onDataReceive (in hyIDataBuffer aBuffer, in nsISupports aContext); */

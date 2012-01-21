@@ -1,5 +1,6 @@
 #include "nsISupports.idl"
 #include "hyIHttpRequestChannel.idl"
+#include "hyIHttpHandlerListener.idl"
 
 [scriptable, uuid(09f57586-308b-4dbd-ae82-5dcf7ba5e3fa)]
 interface hyIHttpHandler : nsISupports

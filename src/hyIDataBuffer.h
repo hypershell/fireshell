@@ -30,8 +30,8 @@ class NS_NO_VTABLE NS_SCRIPTABLE hyIDataBuffer : public nsISupports {
   /* readonly attribute unsigned long long size; */
   NS_SCRIPTABLE NS_IMETHOD GetSize(PRUint64 *aSize) = 0;
 
-  /* string getBuffer (); */
-  NS_SCRIPTABLE NS_IMETHOD GetBuffer(char * *_retval NS_OUTPARAM) = 0;
+  /* readonly attribute string buffer; */
+  NS_SCRIPTABLE NS_IMETHOD GetBuffer(char * *aBuffer) = 0;
 
 };
 
@@ -40,17 +40,17 @@ class NS_NO_VTABLE NS_SCRIPTABLE hyIDataBuffer : public nsISupports {
 /* Use this macro when declaring classes that implement this interface. */
 #define NS_DECL_HYIDATABUFFER \
   NS_SCRIPTABLE NS_IMETHOD GetSize(PRUint64 *aSize); \
-  NS_SCRIPTABLE NS_IMETHOD GetBuffer(char * *_retval NS_OUTPARAM); 
+  NS_SCRIPTABLE NS_IMETHOD GetBuffer(char * *aBuffer); 
 
 /* Use this macro to declare functions that forward the behavior of this interface to another object. */
 #define NS_FORWARD_HYIDATABUFFER(_to) \
   NS_SCRIPTABLE NS_IMETHOD GetSize(PRUint64 *aSize) { return _to GetSize(aSize); } \
-  NS_SCRIPTABLE NS_IMETHOD GetBuffer(char * *_retval NS_OUTPARAM) { return _to GetBuffer(_retval); } 
+  NS_SCRIPTABLE NS_IMETHOD GetBuffer(char * *aBuffer) { return _to GetBuffer(aBuffer); } 
 
 /* Use this macro to declare functions that forward the behavior of this interface to another object in a safe way. */
 #define NS_FORWARD_SAFE_HYIDATABUFFER(_to) \
   NS_SCRIPTABLE NS_IMETHOD GetSize(PRUint64 *aSize) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetSize(aSize); } \
-  NS_SCRIPTABLE NS_IMETHOD GetBuffer(char * *_retval NS_OUTPARAM) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetBuffer(_retval); } 
+  NS_SCRIPTABLE NS_IMETHOD GetBuffer(char * *aBuffer) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetBuffer(aBuffer); } 
 
 #if 0
 /* Use the code below as a template for the implementation class for this interface. */
@@ -90,8 +90,8 @@ NS_IMETHODIMP hyDataBuffer::GetSize(PRUint64 *aSize)
     return NS_ERROR_NOT_IMPLEMENTED;
 }
 
-/* string getBuffer (); */
-NS_IMETHODIMP hyDataBuffer::GetBuffer(char * *_retval NS_OUTPARAM)
+/* readonly attribute string buffer; */
+NS_IMETHODIMP hyDataBuffer::GetBuffer(char * *aBuffer)
 {
     return NS_ERROR_NOT_IMPLEMENTED;
 }

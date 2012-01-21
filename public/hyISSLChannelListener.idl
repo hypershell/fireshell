@@ -1,8 +1,11 @@
 #include "nsISupports.idl"
+#include "hyIDataChannel.idl"
 
 [scriptable, uuid(68c805ae-188f-4e2d-aaae-08381248cada)]
 interface hyISSLChannelListener {
     void onSSLDataReady(
         in hyIDataChannel aDecryptedChannel,
         in nsISupports  aContext);
+
+    void onSSLError(in nsISupports aContext);
 };

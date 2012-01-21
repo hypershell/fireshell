@@ -35,17 +35,17 @@ class NS_NO_VTABLE NS_SCRIPTABLE hyIDataChannel : public nsISupports {
 
   NS_DECLARE_STATIC_IID_ACCESSOR(HYIDATACHANNEL_IID)
 
-  /* void setIncomingChannel (in hyIDataChannel aChannel); */
-  NS_SCRIPTABLE NS_IMETHOD SetIncomingChannel(hyIDataChannel *aChannel) = 0;
+  /* void openDataChannel (in hyIDataChannelListener aListener, in nsISupports aContext, in unsigned long aOffset); */
+  NS_SCRIPTABLE NS_IMETHOD OpenDataChannel(hyIDataChannelListener *aListener, nsISupports *aContext, PRUint32 aOffset) = 0;
 
-  /* void openChannel (in hyIDataChannelListener aListener, in nsISupports aContext); */
-  NS_SCRIPTABLE NS_IMETHOD OpenChannel(hyIDataChannelListener *aListener, nsISupports *aContext) = 0;
+  /* void peek (in hyIDataChannelListener aListener, in nsISupports aContext, in unsigned long aOffset); */
+  NS_SCRIPTABLE NS_IMETHOD Peek(hyIDataChannelListener *aListener, nsISupports *aContext, PRUint32 aOffset) = 0;
 
-  /* readonly attribute ACString ContentType; */
-  NS_SCRIPTABLE NS_IMETHOD GetContentType(nsACString & aContentType) = 0;
+  /* void stopPeek (); */
+  NS_SCRIPTABLE NS_IMETHOD StopPeek(void) = 0;
 
-  /* readonly attribute nsIURI URI; */
-  NS_SCRIPTABLE NS_IMETHOD GetURI(nsIURI * *aURI) = 0;
+  /* void closeDataChannel (); */
+  NS_SCRIPTABLE NS_IMETHOD CloseDataChannel(void) = 0;
 
 };
 
@@ -53,24 +53,24 @@ class NS_NO_VTABLE NS_SCRIPTABLE hyIDataChannel : public nsISupports {
 
 /* Use this macro when declaring classes that implement this interface. */
 #define NS_DECL_HYIDATACHANNEL \
-  NS_SCRIPTABLE NS_IMETHOD SetIncomingChannel(hyIDataChannel *aChannel); \
-  NS_SCRIPTABLE NS_IMETHOD OpenChannel(hyIDataChannelListener *aListener, nsISupports *aContext); \
-  NS_SCRIPTABLE NS_IMETHOD GetContentType(nsACString & aContentType); \
-  NS_SCRIPTABLE NS_IMETHOD GetURI(nsIURI * *aURI); 
+  NS_SCRIPTABLE NS_IMETHOD OpenDataChannel(hyIDataChannelListener *aListener, nsISupports *aContext, PRUint32 aOffset); \
+  NS_SCRIPTABLE NS_IMETHOD Peek(hyIDataChannelListener *aListener, nsISupports *aContext, PRUint32 aOffset); \
+  NS_SCRIPTABLE NS_IMETHOD StopPeek(void); \
+  NS_SCRIPTABLE NS_IMETHOD CloseDataChannel(void); 
 
 /* Use this macro to declare functions that forward the behavior of this interface to another object. */
 #define NS_FORWARD_HYIDATACHANNEL(_to) \
-  NS_SCRIPTABLE NS_IMETHOD SetIncomingChannel(hyIDataChannel *aChannel) { return _to SetIncomingChannel(aChannel); } \
-  NS_SCRIPTABLE NS_IMETHOD OpenChannel(hyIDataChannelListener *aListener, nsISupports *aContext) { return _to OpenChannel(aListener, aContext); } \
-  NS_SCRIPTABLE NS_IMETHOD GetContentType(nsACString & aContentType) { return _to GetContentType(aContentType); } \
-  NS_SCRIPTABLE NS_IMETHOD GetURI(nsIURI * *aURI) { return _to GetURI(aURI); } 
+  NS_SCRIPTABLE NS_IMETHOD OpenDataChannel(hyIDataChannelListener *aListener, nsISupports *aContext, PRUint32 aOffset) { return _to OpenDataChannel(aListener, aContext, aOffset); } \
+  NS_SCRIPTABLE NS_IMETHOD Peek(hyIDataChannelListener *aListener, nsISupports *aContext, PRUint32 aOffset) { return _to Peek(aListener, aContext, aOffset); } \
+  NS_SCRIPTABLE NS_IMETHOD StopPeek(void) { return _to StopPeek(); } \
+  NS_SCRIPTABLE NS_IMETHOD CloseDataChannel(void) { return _to CloseDataChannel(); } 
 
 /* Use this macro to declare functions that forward the behavior of this interface to another object in a safe way. */
 #define NS_FORWARD_SAFE_HYIDATACHANNEL(_to) \
-  NS_SCRIPTABLE NS_IMETHOD SetIncomingChannel(hyIDataChannel *aChannel) { return !_to ? NS_ERROR_NULL_POINTER : _to->SetIncomingChannel(aChannel); } \
-  NS_SCRIPTABLE NS_IMETHOD OpenChannel(hyIDataChannelListener *aListener, nsISupports *aContext) { return !_to ? NS_ERROR_NULL_POINTER : _to->OpenChannel(aListener, aContext); } \
-  NS_SCRIPTABLE NS_IMETHOD GetContentType(nsACString & aContentType) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetContentType(aContentType); } \
-  NS_SCRIPTABLE NS_IMETHOD GetURI(nsIURI * *aURI) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetURI(aURI); } 
+  NS_SCRIPTABLE NS_IMETHOD OpenDataChannel(hyIDataChannelListener *aListener, nsISupports *aContext, PRUint32 aOffset) { return !_to ? NS_ERROR_NULL_POINTER : _to->OpenDataChannel(aListener, aContext, aOffset); } \
+  NS_SCRIPTABLE NS_IMETHOD Peek(hyIDataChannelListener *aListener, nsISupports *aContext, PRUint32 aOffset) { return !_to ? NS_ERROR_NULL_POINTER : _to->Peek(aListener, aContext, aOffset); } \
+  NS_SCRIPTABLE NS_IMETHOD StopPeek(void) { return !_to ? NS_ERROR_NULL_POINTER : _to->StopPeek(); } \
+  NS_SCRIPTABLE NS_IMETHOD CloseDataChannel(void) { return !_to ? NS_ERROR_NULL_POINTER : _to->CloseDataChannel(); } 
 
 #if 0
 /* Use the code below as a template for the implementation class for this interface. */
@@ -104,26 +104,26 @@ hyDataChannel::~hyDataChannel()
   /* destructor code */
 }
 
-/* void setIncomingChannel (in hyIDataChannel aChannel); */
-NS_IMETHODIMP hyDataChannel::SetIncomingChannel(hyIDataChannel *aChannel)
+/* void openDataChannel (in hyIDataChannelListener aListener, in nsISupports aContext, in unsigned long aOffset); */
+NS_IMETHODIMP hyDataChannel::OpenDataChannel(hyIDataChannelListener *aListener, nsISupports *aContext, PRUint32 aOffset)
 {
     return NS_ERROR_NOT_IMPLEMENTED;
 }
 
-/* void openChannel (in hyIDataChannelListener aListener, in nsISupports aContext); */
-NS_IMETHODIMP hyDataChannel::OpenChannel(hyIDataChannelListener *aListener, nsISupports *aContext)
+/* void peek (in hyIDataChannelListener aListener, in nsISupports aContext, in unsigned long aOffset); */
+NS_IMETHODIMP hyDataChannel::Peek(hyIDataChannelListener *aListener, nsISupports *aContext, PRUint32 aOffset)
 {
     return NS_ERROR_NOT_IMPLEMENTED;
 }
 
-/* readonly attribute ACString ContentType; */
-NS_IMETHODIMP hyDataChannel::GetContentType(nsACString & aContentType)
+/* void stopPeek (); */
+NS_IMETHODIMP hyDataChannel::StopPeek()
 {
     return NS_ERROR_NOT_IMPLEMENTED;
 }
 
-/* readonly attribute nsIURI URI; */
-NS_IMETHODIMP hyDataChannel::GetURI(nsIURI * *aURI)
+/* void closeDataChannel (); */
+NS_IMETHODIMP hyDataChannel::CloseDataChannel()
 {
     return NS_ERROR_NOT_IMPLEMENTED;
 }

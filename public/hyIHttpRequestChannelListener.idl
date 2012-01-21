@@ -1,6 +1,8 @@
 #include "nsISupports.idl"
+#include "hyIHttpRequest.idl"
+#include "hyIDataChannel.idl"
 
-[scriptable, uuid(fa9f2917-2256-496c-9663-8aca31ce283c)]
+[scriptable, uuid(161613ed-7750-4fe5-8e22-39c33e07ba13)]
 interface hyIHttpRequestChannelListener : nsISupports {
     void onHttpRequestReady(
         in hyIHttpRequest aRequest,
@@ -9,7 +11,7 @@ interface hyIHttpRequestChannelListener : nsISupports {
          * This carries the actual HTTP content other than 
          * the header part. 
          */
-        in hyIDataChannel aRawChannel, 
+        in hyIDataChannel aDataChannel, 
 
         in nsISupports aContext);
 };

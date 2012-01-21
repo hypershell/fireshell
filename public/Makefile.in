@@ -12,18 +12,34 @@ XPI_NAME		= fireshell
 
 
 XPIDLSRCS	= \
-		hyIDataBuffer.idl \
-		hyIDataChannel.idl \
-		hyIDataChannelListener.idl \
-		hyIHttpChannel.idl \
-		hyIUploadDataChannel.idl \
-		hyIHttpHeaderFields.idl \
-		hyIXmlHttpChannel.idl \
-		hyIXmlHttpChannelListener.idl \
-		hyITextHttpChannel.idl \
-		hyITextHttpChannelListener.idl \
-		hyIChannelToStreamConverter.idl \
-		hyIChannelToStreamConverterListener.idl \
-		$(NULL)
+	hyIChannelHandler.idl \
+	hyIChannelHandlerListener.idl \
+	hyIChannelToStreamConverter.idl \
+	hyIChannelToStreamConverterListener.idl \
+	hyIDataBuffer.idl \
+	hyIDataChannel.idl \
+	hyIDataChannelListener.idl \
+	hyIHttpChannel.idl \
+	hyIHttpHandlerFactory.idl \
+	hyIHttpHandler.idl \
+	hyIHttpHandlerListener.idl \
+	hyIHttpHandlerTable.idl \
+	hyIHttpHeaderFields.idl \
+	hyIHttpRequestChannel.idl \
+	hyIHttpRequestChannelListener.idl \
+	hyIHttpRequest.idl \
+	hyIHttpResponseChannel.idl \
+	hyIHttpResponseChannelListener.idl \
+	hyIHttpResponse.idl \
+	hyISSLChannel.idl \
+	hyISSLChannelListener.idl \
+	hyITextChannel.idl \
+	hyITextChannelListener.idl \
+	hyIUnicodeString.idl \
+	hyIUnicodeStringIterator.idl \
+	hyIUploadDataChannel.idl \
+	hyIXmlChannel.idl \
+	hyIXmlChannelListener.idl \
+	$(NULL)
 		
 include $(topsrcdir)/config/rules.mk

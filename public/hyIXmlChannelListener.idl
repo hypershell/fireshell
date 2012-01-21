@@ -13,5 +13,5 @@ interface hyIXmlChannelListener : nsISupports
    * This includes the data buffers that has been received by the
    * XmlHttpChannel so far.
    */
-  hyIDataChannelListener onInvalidXmlData(in nsISupports aContext);
+  hyIDataChannelListener onMalformedXML(in nsISupports aContext);
 };

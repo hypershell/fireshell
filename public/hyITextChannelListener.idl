@@ -1,8 +1,10 @@
 #include "nsISupports.idl"
-#include "nsIDOMDocument.idl"
+#include "hyIUnicodeString.idl"
 
 [scriptable, uuid(785a0097-00f1-4090-8e63-19f66e7cdbe2)]
 interface hyITextChannelListener : nsISupports
 {
-  void onTextDataReceive(in ACString aText, in nsISupports aContext);
+  void onTextDataReceive(in hyIUnicodeString aText, in nsISupports aContext);
+
+  void onMalformedText(in nsISupports aContext);
 };

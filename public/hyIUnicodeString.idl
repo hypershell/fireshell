@@ -13,7 +13,7 @@ interface hyIUnicodeString : nsISupports
    * Creates an iterator that automatically decode and 
    * iterate through the Unicode string.
    */
-  hyIUnicodestringIterator iter();
+  hyIUnicodeStringIterator iter();
 
   /*
    * Get the encoding name in the form of ASCII string.
@@ -29,4 +29,4 @@ interface hyIUnicodeString : nsISupports
    * get the raw byte content of the string.
    */
   readonly attribute string bytes;
-}
+};

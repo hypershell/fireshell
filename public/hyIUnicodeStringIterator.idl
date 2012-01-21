@@ -1,7 +1,7 @@
 #include "nsISupports.idl"
 
 [scriptable, uuid(dd9298be-54d6-4f05-addb-76c68d3b4255)]
-interface hyIUnicodeStringIterator : nsISuppors
+interface hyIUnicodeStringIterator : nsISupports
 {
   /*
    * Get the code point value at the current iterator position.
@@ -22,4 +22,4 @@ interface hyIUnicodeStringIterator : nsISuppors
    * will be raised.
    */
   boolean hasNext();
-}
+};
