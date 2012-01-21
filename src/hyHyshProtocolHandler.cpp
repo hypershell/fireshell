@@ -164,7 +164,7 @@ NS_IMETHODIMP hyHyshProtocolHandler::NewChannel(nsIURI *aURI, nsIChannel * *_ret
 }
 
 /* boolean allowPort (in long port, in string scheme); */
-NS_IMETHODIMP hyHyshProtocolHandler::AllowPort(PRInt32 port, const char * scheme, PRBool *_retval NS_OUTPARAM)
+NS_IMETHODIMP hyHyshProtocolHandler::AllowPort(PRInt32 port, const char * scheme, bool *_retval NS_OUTPARAM)
 {
     *_retval = false;
     return NS_OK;

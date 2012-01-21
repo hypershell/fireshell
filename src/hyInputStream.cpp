@@ -156,7 +156,7 @@ NS_IMETHODIMP hyInputStream::ReadSegments(nsWriteSegmentFun aWriter, void *aClos
 }
 
 /* boolean isNonBlocking (); */
-NS_IMETHODIMP hyInputStream::IsNonBlocking(PRBool *_retval NS_OUTPARAM)
+NS_IMETHODIMP hyInputStream::IsNonBlocking(bool *_retval NS_OUTPARAM)
 {
     *_retval = true;
     return NS_OK;

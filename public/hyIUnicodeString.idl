@@ -1,0 +1,32 @@
+#include "nsISupports.idl"
+#include "hyIUnicodeStringIterator.idl"
+
+[scriptable, uuid(926822ca-d6c5-41cf-ab27-e369d2cda450)]
+interface hyIUnicodeString : nsISupports
+{
+  /*
+   * The number of code points the Unicode string has.
+   */
+  readonly attribute unsigned long long size;
+
+  /*
+   * Creates an iterator that automatically decode and 
+   * iterate through the Unicode string.
+   */
+  hyIUnicodestringIterator iter();
+
+  /*
+   * Get the encoding name in the form of ASCII string.
+   */
+  readonly attribute string encoding;
+
+  /*
+   * Get the raw size of the string.
+   */
+  readonly attribute unsigned long long byteSize;
+
+  /*
+   * get the raw byte content of the string.
+   */
+  readonly attribute string bytes;
+}

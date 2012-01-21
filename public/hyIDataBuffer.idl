@@ -4,5 +4,5 @@
 interface hyIDataBuffer : nsISupports
 {
   readonly attribute unsigned long long size;
-  string getBuffer();
+  readonly attribute string buffer;
 };

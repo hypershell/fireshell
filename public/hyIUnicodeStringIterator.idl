@@ -1,0 +1,25 @@
+#include "nsISupports.idl"
+
+[scriptable, uuid(dd9298be-54d6-4f05-addb-76c68d3b4255)]
+interface hyIUnicodeStringIterator : nsISuppors
+{
+  /*
+   * Get the code point value at the current iterator position.
+   * Calling this is always valid as exception will be raised
+   * when progressing beyond the last code point.
+   */
+  readonly attribute unsigned long long codepoint;
+
+  /*
+   * Advance to the next iterator position. Exception will
+   * be thrown if currently already at the last code point.
+   */
+  void next();
+
+  /*
+   * Return true if there are code points remaining. One must
+   * not call next() if hasNext() returns false, or exception
+   * will be raised.
+   */
+  boolean hasNext();
+}

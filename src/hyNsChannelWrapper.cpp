@@ -151,7 +151,7 @@ NS_IMETHODIMP hyNsChannelWrapper::GetName(nsACString & aName)
 }
 
 /* boolean isPending (); */
-NS_IMETHODIMP hyNsChannelWrapper::IsPending(PRBool *_retval NS_OUTPARAM)
+NS_IMETHODIMP hyNsChannelWrapper::IsPending(bool *_retval NS_OUTPARAM)
 {
     *_retval = mOpenedState && !mClosedState;
     return NS_OK;
