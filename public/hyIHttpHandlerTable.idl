@@ -6,6 +6,6 @@ interface hyIHttpHandlerTable : nsISupports {
     hyIHttpHandlerFactory getHttpHandlerFactory(in ACString aPath);
 
     void registerHttpHandlerFactory(
-            in ACString aPath, 
+            in string aPath, 
             in hyIHttpHandlerFactory aFactory);
 };

@@ -1,0 +1,16 @@
+
+#include "hyIAsciiString.idl"
+
+[uuid(d8ec8a2c-479a-49d4-8a65-c30848963c1e)]
+interface hyICppStdString : hyIAsciiString
+{
+    /*
+     * Returns a void* pointer that to be manually 
+     * static casted into std::string* and then 
+     * dereferenced into const std::string&.
+     * 
+     * The std::string object must not be modified
+     * even though it is allowed by the compiler.
+     */
+    voidPtr toCppStringPtr();
+};

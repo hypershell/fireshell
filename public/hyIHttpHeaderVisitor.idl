@@ -1,0 +1,10 @@
+#include "nsISupports.idl"
+#include "hyIAsciiString.idl"
+
+[scriptable, uuid(3f929378-67c1-4cea-bd87-3e193d0ee086)]
+interface hyIHttpHeaderVisitor : nsISupports
+{
+  void visitHeader(
+          in hyIAsciiString aHeader, 
+          in hyIAsciiString aValue);
+};

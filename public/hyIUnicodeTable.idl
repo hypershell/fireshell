@@ -1,0 +1,14 @@
+
+#include "nsISupports.idl"
+#include "hyIUnicodeString.idl"
+#include "hyIUnicodeTableVisitor.idl"
+
+[scriptable, uuid(5af50a3c-e502-48d4-b468-604ea893b694)]
+interface hyIUnicodeTable : nsISupports {
+    /*
+     * Returns NULL of such key does not exist.
+     */
+    hyIUnicodeString getValue(in hyIUnicodeString aKey);
+
+    void acceptTableVisitor(in hyIUnicodeTableVisitor aVisitor);
+};

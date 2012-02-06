@@ -1,9 +1,13 @@
 #include "nsISupports.idl"
-#include "nsIHttpHeaderVisitor.idl"
+#include "hyIHttpHeaderVisitor.idl"
 
 [scriptable, uuid(58baf11d-f41f-41ed-9c1c-8150962a1da4)]
-interface hyIHttpHeaderFields : nsIHttpHeaderVisitor
+interface hyIHttpHeaderFields : nsISupports
 {
-  ACString getValue(in ACString aKey);
-  void acceptHeaderVisitor(in nsIHttpHeaderVisitor aVisitor);
+  /*
+   * Returns NULL if there is no such key.
+   */
+  hyIAsciiString getValue(in hyIAsciiString aKey);
+
+  void acceptHeaderVisitor(in hyIHttpHeaderVisitor aVisitor);
 };

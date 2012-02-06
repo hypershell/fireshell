@@ -10,8 +10,8 @@
 #include "nsISupports.h"
 #endif
 
-#ifndef __gen_nsIHttpHeaderVisitor_h__
-#include "nsIHttpHeaderVisitor.h"
+#ifndef __gen_hyIHttpHeaderVisitor_h__
+#include "hyIHttpHeaderVisitor.h"
 #endif
 
 /* For IDL files that don't want to include root IDL files. */
@@ -26,16 +26,16 @@
   {0x58baf11d, 0xf41f, 0x41ed, \
     { 0x9c, 0x1c, 0x81, 0x50, 0x96, 0x2a, 0x1d, 0xa4 }}
 
-class NS_NO_VTABLE NS_SCRIPTABLE hyIHttpHeaderFields : public nsIHttpHeaderVisitor {
+class NS_NO_VTABLE NS_SCRIPTABLE hyIHttpHeaderFields : public nsISupports {
  public: 
 
   NS_DECLARE_STATIC_IID_ACCESSOR(HYIHTTPHEADERFIELDS_IID)
 
-  /* ACString getValue (in ACString aKey); */
-  NS_SCRIPTABLE NS_IMETHOD GetValue(const nsACString & aKey, nsACString & _retval NS_OUTPARAM) = 0;
+  /* hyIAsciiString getValue (in hyIAsciiString aKey); */
+  NS_SCRIPTABLE NS_IMETHOD GetValue(hyIAsciiString *aKey, hyIAsciiString * *_retval NS_OUTPARAM) = 0;
 
-  /* void acceptHeaderVisitor (in nsIHttpHeaderVisitor aVisitor); */
-  NS_SCRIPTABLE NS_IMETHOD AcceptHeaderVisitor(nsIHttpHeaderVisitor *aVisitor) = 0;
+  /* void acceptHeaderVisitor (in hyIHttpHeaderVisitor aVisitor); */
+  NS_SCRIPTABLE NS_IMETHOD AcceptHeaderVisitor(hyIHttpHeaderVisitor *aVisitor) = 0;
 
 };
 
@@ -43,18 +43,18 @@ class NS_NO_VTABLE NS_SCRIPTABLE hyIHttpHeaderFields : public nsIHttpHeaderVisit
 
 /* Use this macro when declaring classes that implement this interface. */
 #define NS_DECL_HYIHTTPHEADERFIELDS \
-  NS_SCRIPTABLE NS_IMETHOD GetValue(const nsACString & aKey, nsACString & _retval NS_OUTPARAM); \
-  NS_SCRIPTABLE NS_IMETHOD AcceptHeaderVisitor(nsIHttpHeaderVisitor *aVisitor); 
+  NS_SCRIPTABLE NS_IMETHOD GetValue(hyIAsciiString *aKey, hyIAsciiString * *_retval NS_OUTPARAM); \
+  NS_SCRIPTABLE NS_IMETHOD AcceptHeaderVisitor(hyIHttpHeaderVisitor *aVisitor); 
 
 /* Use this macro to declare functions that forward the behavior of this interface to another object. */
 #define NS_FORWARD_HYIHTTPHEADERFIELDS(_to) \
-  NS_SCRIPTABLE NS_IMETHOD GetValue(const nsACString & aKey, nsACString & _retval NS_OUTPARAM) { return _to GetValue(aKey, _retval); } \
-  NS_SCRIPTABLE NS_IMETHOD AcceptHeaderVisitor(nsIHttpHeaderVisitor *aVisitor) { return _to AcceptHeaderVisitor(aVisitor); } 
+  NS_SCRIPTABLE NS_IMETHOD GetValue(hyIAsciiString *aKey, hyIAsciiString * *_retval NS_OUTPARAM) { return _to GetValue(aKey, _retval); } \
+  NS_SCRIPTABLE NS_IMETHOD AcceptHeaderVisitor(hyIHttpHeaderVisitor *aVisitor) { return _to AcceptHeaderVisitor(aVisitor); } 
 
 /* Use this macro to declare functions that forward the behavior of this interface to another object in a safe way. */
 #define NS_FORWARD_SAFE_HYIHTTPHEADERFIELDS(_to) \
-  NS_SCRIPTABLE NS_IMETHOD GetValue(const nsACString & aKey, nsACString & _retval NS_OUTPARAM) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetValue(aKey, _retval); } \
-  NS_SCRIPTABLE NS_IMETHOD AcceptHeaderVisitor(nsIHttpHeaderVisitor *aVisitor) { return !_to ? NS_ERROR_NULL_POINTER : _to->AcceptHeaderVisitor(aVisitor); } 
+  NS_SCRIPTABLE NS_IMETHOD GetValue(hyIAsciiString *aKey, hyIAsciiString * *_retval NS_OUTPARAM) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetValue(aKey, _retval); } \
+  NS_SCRIPTABLE NS_IMETHOD AcceptHeaderVisitor(hyIHttpHeaderVisitor *aVisitor) { return !_to ? NS_ERROR_NULL_POINTER : _to->AcceptHeaderVisitor(aVisitor); } 
 
 #if 0
 /* Use the code below as a template for the implementation class for this interface. */
@@ -88,14 +88,14 @@ hyHttpHeaderFields::~hyHttpHeaderFields()
   /* destructor code */
 }
 
-/* ACString getValue (in ACString aKey); */
-NS_IMETHODIMP hyHttpHeaderFields::GetValue(const nsACString & aKey, nsACString & _retval NS_OUTPARAM)
+/* hyIAsciiString getValue (in hyIAsciiString aKey); */
+NS_IMETHODIMP hyHttpHeaderFields::GetValue(hyIAsciiString *aKey, hyIAsciiString * *_retval NS_OUTPARAM)
 {
     return NS_ERROR_NOT_IMPLEMENTED;
 }
 
-/* void acceptHeaderVisitor (in nsIHttpHeaderVisitor aVisitor); */
-NS_IMETHODIMP hyHttpHeaderFields::AcceptHeaderVisitor(nsIHttpHeaderVisitor *aVisitor)
+/* void acceptHeaderVisitor (in hyIHttpHeaderVisitor aVisitor); */
+NS_IMETHODIMP hyHttpHeaderFields::AcceptHeaderVisitor(hyIHttpHeaderVisitor *aVisitor)
 {
     return NS_ERROR_NOT_IMPLEMENTED;
 }

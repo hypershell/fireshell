@@ -6,6 +6,8 @@
 interface hyIHttpResponseChannelListener {
     void onHttpResponseReady(
         in hyIHttpResponse aResponse,
+
+        in hyIHttpHeaderFields aHeaders,
         
         /* 
          * This carries the actual HTTP content other than 

@@ -1,0 +1,10 @@
+#include "hyIHttpHandler.idl"
+
+[scriptable, uuid(8a762cae-6771-4078-882d-6e0813629b47)]
+interface hyIPipelineHttpHandler : hyIHttpHandler
+{
+  void appendHttpHandler(
+          in hyIHttpHandler aHandler,
+          in hyIHttpRequest aRequest,
+          in hyIHttpHeaderFields aHeaders);
+};

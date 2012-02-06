@@ -1,5 +1,7 @@
 #include "nsISupports.idl"
+#include "hyIAsciiString.idl"
 #include "hyIUnicodeStringIterator.idl"
+#include "hyIDataBuffer.idl"
 
 [scriptable, uuid(926822ca-d6c5-41cf-ab27-e369d2cda450)]
 interface hyIUnicodeString : nsISupports
@@ -7,7 +9,7 @@ interface hyIUnicodeString : nsISupports
   /*
    * The number of code points the Unicode string has.
    */
-  readonly attribute unsigned long long size;
+  readonly attribute unsigned long long length;
 
   /*
    * Creates an iterator that automatically decode and 
@@ -18,15 +20,12 @@ interface hyIUnicodeString : nsISupports
   /*
    * Get the encoding name in the form of ASCII string.
    */
-  readonly attribute string encoding;
+  readonly attribute hyIAsciiString encoding;
 
   /*
-   * Get the raw size of the string.
+   * Get the raw buffer that contains the encoded raw bytes.
    */
-  readonly attribute unsigned long long byteSize;
+  readonly attribute hyIDataBuffer buffer;
 
-  /*
-   * get the raw byte content of the string.
-   */
-  readonly attribute string bytes;
+  bool equalCodepoint(in hyIUnicodeString aOther);
 };

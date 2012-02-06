@@ -18,6 +18,10 @@
 #include "hyIHttpHeaderFields.h"
 #endif
 
+#ifndef __gen_hyIUnicodeTable_h__
+#include "hyIUnicodeTable.h"
+#endif
+
 /* For IDL files that don't want to include root IDL files. */
 #ifndef NS_NO_VTABLE
 #define NS_NO_VTABLE
@@ -35,23 +39,23 @@ class NS_NO_VTABLE NS_SCRIPTABLE hyIHttpRequest : public nsISupports {
 
   NS_DECLARE_STATIC_IID_ACCESSOR(HYIHTTPREQUEST_IID)
 
-  /* readonly attribute ACString requestHttpVersion; */
-  NS_SCRIPTABLE NS_IMETHOD GetRequestHttpVersion(nsACString & aRequestHttpVersion) = 0;
+  /* readonly attribute hyIAsciiString requestHttpVersion; */
+  NS_SCRIPTABLE NS_IMETHOD GetRequestHttpVersion(hyIAsciiString * *aRequestHttpVersion) = 0;
 
-  /* readonly attribute nsIURI requestURI; */
-  NS_SCRIPTABLE NS_IMETHOD GetRequestURI(nsIURI * *aRequestURI) = 0;
+  /* readonly attribute hyIAsciiString requestPath; */
+  NS_SCRIPTABLE NS_IMETHOD GetRequestPath(hyIAsciiString * *aRequestPath) = 0;
 
-  /* readonly attribute ACString requestMethod; */
-  NS_SCRIPTABLE NS_IMETHOD GetRequestMethod(nsACString & aRequestMethod) = 0;
+  /* readonly attribute hyIAsciiString requestQueryString; */
+  NS_SCRIPTABLE NS_IMETHOD GetRequestQueryString(hyIAsciiString * *aRequestQueryString) = 0;
 
-  /* readonly attribute ACString requestHost; */
-  NS_SCRIPTABLE NS_IMETHOD GetRequestHost(nsACString & aRequestHost) = 0;
+  /* readonly attribute hyIUnicodeTable requestQueryParams; */
+  NS_SCRIPTABLE NS_IMETHOD GetRequestQueryParams(hyIUnicodeTable * *aRequestQueryParams) = 0;
 
-  /* readonly attribute ACString requestContentType; */
-  NS_SCRIPTABLE NS_IMETHOD GetRequestContentType(nsACString & aRequestContentType) = 0;
+  /* readonly attribute hyIAsciiString requestMethod; */
+  NS_SCRIPTABLE NS_IMETHOD GetRequestMethod(hyIAsciiString * *aRequestMethod) = 0;
 
-  /* readonly attribute hyIHttpHeaderFields requestHeaders; */
-  NS_SCRIPTABLE NS_IMETHOD GetRequestHeaders(hyIHttpHeaderFields * *aRequestHeaders) = 0;
+  /* readonly attribute hyIAsciiString requestHost; */
+  NS_SCRIPTABLE NS_IMETHOD GetRequestHost(hyIAsciiString * *aRequestHost) = 0;
 
 };
 
@@ -59,30 +63,30 @@ class NS_NO_VTABLE NS_SCRIPTABLE hyIHttpRequest : public nsISupports {
 
 /* Use this macro when declaring classes that implement this interface. */
 #define NS_DECL_HYIHTTPREQUEST \
-  NS_SCRIPTABLE NS_IMETHOD GetRequestHttpVersion(nsACString & aRequestHttpVersion); \
-  NS_SCRIPTABLE NS_IMETHOD GetRequestURI(nsIURI * *aRequestURI); \
-  NS_SCRIPTABLE NS_IMETHOD GetRequestMethod(nsACString & aRequestMethod); \
-  NS_SCRIPTABLE NS_IMETHOD GetRequestHost(nsACString & aRequestHost); \
-  NS_SCRIPTABLE NS_IMETHOD GetRequestContentType(nsACString & aRequestContentType); \
-  NS_SCRIPTABLE NS_IMETHOD GetRequestHeaders(hyIHttpHeaderFields * *aRequestHeaders); 
+  NS_SCRIPTABLE NS_IMETHOD GetRequestHttpVersion(hyIAsciiString * *aRequestHttpVersion); \
+  NS_SCRIPTABLE NS_IMETHOD GetRequestPath(hyIAsciiString * *aRequestPath); \
+  NS_SCRIPTABLE NS_IMETHOD GetRequestQueryString(hyIAsciiString * *aRequestQueryString); \
+  NS_SCRIPTABLE NS_IMETHOD GetRequestQueryParams(hyIUnicodeTable * *aRequestQueryParams); \
+  NS_SCRIPTABLE NS_IMETHOD GetRequestMethod(hyIAsciiString * *aRequestMethod); \
+  NS_SCRIPTABLE NS_IMETHOD GetRequestHost(hyIAsciiString * *aRequestHost); 
 
 /* Use this macro to declare functions that forward the behavior of this interface to another object. */
 #define NS_FORWARD_HYIHTTPREQUEST(_to) \
-  NS_SCRIPTABLE NS_IMETHOD GetRequestHttpVersion(nsACString & aRequestHttpVersion) { return _to GetRequestHttpVersion(aRequestHttpVersion); } \
-  NS_SCRIPTABLE NS_IMETHOD GetRequestURI(nsIURI * *aRequestURI) { return _to GetRequestURI(aRequestURI); } \
-  NS_SCRIPTABLE NS_IMETHOD GetRequestMethod(nsACString & aRequestMethod) { return _to GetRequestMethod(aRequestMethod); } \
-  NS_SCRIPTABLE NS_IMETHOD GetRequestHost(nsACString & aRequestHost) { return _to GetRequestHost(aRequestHost); } \
-  NS_SCRIPTABLE NS_IMETHOD GetRequestContentType(nsACString & aRequestContentType) { return _to GetRequestContentType(aRequestContentType); } \
-  NS_SCRIPTABLE NS_IMETHOD GetRequestHeaders(hyIHttpHeaderFields * *aRequestHeaders) { return _to GetRequestHeaders(aRequestHeaders); } 
+  NS_SCRIPTABLE NS_IMETHOD GetRequestHttpVersion(hyIAsciiString * *aRequestHttpVersion) { return _to GetRequestHttpVersion(aRequestHttpVersion); } \
+  NS_SCRIPTABLE NS_IMETHOD GetRequestPath(hyIAsciiString * *aRequestPath) { return _to GetRequestPath(aRequestPath); } \
+  NS_SCRIPTABLE NS_IMETHOD GetRequestQueryString(hyIAsciiString * *aRequestQueryString) { return _to GetRequestQueryString(aRequestQueryString); } \
+  NS_SCRIPTABLE NS_IMETHOD GetRequestQueryParams(hyIUnicodeTable * *aRequestQueryParams) { return _to GetRequestQueryParams(aRequestQueryParams); } \
+  NS_SCRIPTABLE NS_IMETHOD GetRequestMethod(hyIAsciiString * *aRequestMethod) { return _to GetRequestMethod(aRequestMethod); } \
+  NS_SCRIPTABLE NS_IMETHOD GetRequestHost(hyIAsciiString * *aRequestHost) { return _to GetRequestHost(aRequestHost); } 
 
 /* Use this macro to declare functions that forward the behavior of this interface to another object in a safe way. */
 #define NS_FORWARD_SAFE_HYIHTTPREQUEST(_to) \
-  NS_SCRIPTABLE NS_IMETHOD GetRequestHttpVersion(nsACString & aRequestHttpVersion) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetRequestHttpVersion(aRequestHttpVersion); } \
-  NS_SCRIPTABLE NS_IMETHOD GetRequestURI(nsIURI * *aRequestURI) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetRequestURI(aRequestURI); } \
-  NS_SCRIPTABLE NS_IMETHOD GetRequestMethod(nsACString & aRequestMethod) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetRequestMethod(aRequestMethod); } \
-  NS_SCRIPTABLE NS_IMETHOD GetRequestHost(nsACString & aRequestHost) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetRequestHost(aRequestHost); } \
-  NS_SCRIPTABLE NS_IMETHOD GetRequestContentType(nsACString & aRequestContentType) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetRequestContentType(aRequestContentType); } \
-  NS_SCRIPTABLE NS_IMETHOD GetRequestHeaders(hyIHttpHeaderFields * *aRequestHeaders) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetRequestHeaders(aRequestHeaders); } 
+  NS_SCRIPTABLE NS_IMETHOD GetRequestHttpVersion(hyIAsciiString * *aRequestHttpVersion) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetRequestHttpVersion(aRequestHttpVersion); } \
+  NS_SCRIPTABLE NS_IMETHOD GetRequestPath(hyIAsciiString * *aRequestPath) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetRequestPath(aRequestPath); } \
+  NS_SCRIPTABLE NS_IMETHOD GetRequestQueryString(hyIAsciiString * *aRequestQueryString) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetRequestQueryString(aRequestQueryString); } \
+  NS_SCRIPTABLE NS_IMETHOD GetRequestQueryParams(hyIUnicodeTable * *aRequestQueryParams) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetRequestQueryParams(aRequestQueryParams); } \
+  NS_SCRIPTABLE NS_IMETHOD GetRequestMethod(hyIAsciiString * *aRequestMethod) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetRequestMethod(aRequestMethod); } \
+  NS_SCRIPTABLE NS_IMETHOD GetRequestHost(hyIAsciiString * *aRequestHost) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetRequestHost(aRequestHost); } 
 
 #if 0
 /* Use the code below as a template for the implementation class for this interface. */
@@ -116,38 +120,38 @@ hyHttpRequest::~hyHttpRequest()
   /* destructor code */
 }
 
-/* readonly attribute ACString requestHttpVersion; */
-NS_IMETHODIMP hyHttpRequest::GetRequestHttpVersion(nsACString & aRequestHttpVersion)
+/* readonly attribute hyIAsciiString requestHttpVersion; */
+NS_IMETHODIMP hyHttpRequest::GetRequestHttpVersion(hyIAsciiString * *aRequestHttpVersion)
 {
     return NS_ERROR_NOT_IMPLEMENTED;
 }
 
-/* readonly attribute nsIURI requestURI; */
-NS_IMETHODIMP hyHttpRequest::GetRequestURI(nsIURI * *aRequestURI)
+/* readonly attribute hyIAsciiString requestPath; */
+NS_IMETHODIMP hyHttpRequest::GetRequestPath(hyIAsciiString * *aRequestPath)
 {
     return NS_ERROR_NOT_IMPLEMENTED;
 }
 
-/* readonly attribute ACString requestMethod; */
-NS_IMETHODIMP hyHttpRequest::GetRequestMethod(nsACString & aRequestMethod)
+/* readonly attribute hyIAsciiString requestQueryString; */
+NS_IMETHODIMP hyHttpRequest::GetRequestQueryString(hyIAsciiString * *aRequestQueryString)
 {
     return NS_ERROR_NOT_IMPLEMENTED;
 }
 
-/* readonly attribute ACString requestHost; */
-NS_IMETHODIMP hyHttpRequest::GetRequestHost(nsACString & aRequestHost)
+/* readonly attribute hyIUnicodeTable requestQueryParams; */
+NS_IMETHODIMP hyHttpRequest::GetRequestQueryParams(hyIUnicodeTable * *aRequestQueryParams)
 {
     return NS_ERROR_NOT_IMPLEMENTED;
 }
 
-/* readonly attribute ACString requestContentType; */
-NS_IMETHODIMP hyHttpRequest::GetRequestContentType(nsACString & aRequestContentType)
+/* readonly attribute hyIAsciiString requestMethod; */
+NS_IMETHODIMP hyHttpRequest::GetRequestMethod(hyIAsciiString * *aRequestMethod)
 {
     return NS_ERROR_NOT_IMPLEMENTED;
 }
 
-/* readonly attribute hyIHttpHeaderFields requestHeaders; */
-NS_IMETHODIMP hyHttpRequest::GetRequestHeaders(hyIHttpHeaderFields * *aRequestHeaders)
+/* readonly attribute hyIAsciiString requestHost; */
+NS_IMETHODIMP hyHttpRequest::GetRequestHost(hyIAsciiString * *aRequestHost)
 {
     return NS_ERROR_NOT_IMPLEMENTED;
 }

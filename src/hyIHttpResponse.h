@@ -31,20 +31,14 @@ class NS_NO_VTABLE NS_SCRIPTABLE hyIHttpResponse {
 
   NS_DECLARE_STATIC_IID_ACCESSOR(HYIHTTPRESPONSE_IID)
 
-  /* readonly attribute ACString responseHttpVersion; */
-  NS_SCRIPTABLE NS_IMETHOD GetResponseHttpVersion(nsACString & aResponseHttpVersion) = 0;
+  /* readonly attribute hyIAsciiString responseHttpVersion; */
+  NS_SCRIPTABLE NS_IMETHOD GetResponseHttpVersion(hyIAsciiString * *aResponseHttpVersion) = 0;
 
   /* readonly attribute unsigned long responseStatusCode; */
   NS_SCRIPTABLE NS_IMETHOD GetResponseStatusCode(PRUint32 *aResponseStatusCode) = 0;
 
-  /* readonly attribute ACString responseStatusMessage; */
-  NS_SCRIPTABLE NS_IMETHOD GetResponseStatusMessage(nsACString & aResponseStatusMessage) = 0;
-
-  /* readonly attribute ACString responseContentType; */
-  NS_SCRIPTABLE NS_IMETHOD GetResponseContentType(nsACString & aResponseContentType) = 0;
-
-  /* readonly attribute hyIHttpHeaderFields responseHeaders; */
-  NS_SCRIPTABLE NS_IMETHOD GetResponseHeaders(hyIHttpHeaderFields * *aResponseHeaders) = 0;
+  /* readonly attribute hyIAsciiString responseStatusMessage; */
+  NS_SCRIPTABLE NS_IMETHOD GetResponseStatusMessage(hyIAsciiString * *aResponseStatusMessage) = 0;
 
 };
 
@@ -52,27 +46,21 @@ class NS_NO_VTABLE NS_SCRIPTABLE hyIHttpResponse {
 
 /* Use this macro when declaring classes that implement this interface. */
 #define NS_DECL_HYIHTTPRESPONSE \
-  NS_SCRIPTABLE NS_IMETHOD GetResponseHttpVersion(nsACString & aResponseHttpVersion); \
+  NS_SCRIPTABLE NS_IMETHOD GetResponseHttpVersion(hyIAsciiString * *aResponseHttpVersion); \
   NS_SCRIPTABLE NS_IMETHOD GetResponseStatusCode(PRUint32 *aResponseStatusCode); \
-  NS_SCRIPTABLE NS_IMETHOD GetResponseStatusMessage(nsACString & aResponseStatusMessage); \
-  NS_SCRIPTABLE NS_IMETHOD GetResponseContentType(nsACString & aResponseContentType); \
-  NS_SCRIPTABLE NS_IMETHOD GetResponseHeaders(hyIHttpHeaderFields * *aResponseHeaders); 
+  NS_SCRIPTABLE NS_IMETHOD GetResponseStatusMessage(hyIAsciiString * *aResponseStatusMessage); 
 
 /* Use this macro to declare functions that forward the behavior of this interface to another object. */
 #define NS_FORWARD_HYIHTTPRESPONSE(_to) \
-  NS_SCRIPTABLE NS_IMETHOD GetResponseHttpVersion(nsACString & aResponseHttpVersion) { return _to GetResponseHttpVersion(aResponseHttpVersion); } \
+  NS_SCRIPTABLE NS_IMETHOD GetResponseHttpVersion(hyIAsciiString * *aResponseHttpVersion) { return _to GetResponseHttpVersion(aResponseHttpVersion); } \
   NS_SCRIPTABLE NS_IMETHOD GetResponseStatusCode(PRUint32 *aResponseStatusCode) { return _to GetResponseStatusCode(aResponseStatusCode); } \
-  NS_SCRIPTABLE NS_IMETHOD GetResponseStatusMessage(nsACString & aResponseStatusMessage) { return _to GetResponseStatusMessage(aResponseStatusMessage); } \
-  NS_SCRIPTABLE NS_IMETHOD GetResponseContentType(nsACString & aResponseContentType) { return _to GetResponseContentType(aResponseContentType); } \
-  NS_SCRIPTABLE NS_IMETHOD GetResponseHeaders(hyIHttpHeaderFields * *aResponseHeaders) { return _to GetResponseHeaders(aResponseHeaders); } 
+  NS_SCRIPTABLE NS_IMETHOD GetResponseStatusMessage(hyIAsciiString * *aResponseStatusMessage) { return _to GetResponseStatusMessage(aResponseStatusMessage); } 
 
 /* Use this macro to declare functions that forward the behavior of this interface to another object in a safe way. */
 #define NS_FORWARD_SAFE_HYIHTTPRESPONSE(_to) \
-  NS_SCRIPTABLE NS_IMETHOD GetResponseHttpVersion(nsACString & aResponseHttpVersion) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetResponseHttpVersion(aResponseHttpVersion); } \
+  NS_SCRIPTABLE NS_IMETHOD GetResponseHttpVersion(hyIAsciiString * *aResponseHttpVersion) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetResponseHttpVersion(aResponseHttpVersion); } \
   NS_SCRIPTABLE NS_IMETHOD GetResponseStatusCode(PRUint32 *aResponseStatusCode) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetResponseStatusCode(aResponseStatusCode); } \
-  NS_SCRIPTABLE NS_IMETHOD GetResponseStatusMessage(nsACString & aResponseStatusMessage) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetResponseStatusMessage(aResponseStatusMessage); } \
-  NS_SCRIPTABLE NS_IMETHOD GetResponseContentType(nsACString & aResponseContentType) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetResponseContentType(aResponseContentType); } \
-  NS_SCRIPTABLE NS_IMETHOD GetResponseHeaders(hyIHttpHeaderFields * *aResponseHeaders) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetResponseHeaders(aResponseHeaders); } 
+  NS_SCRIPTABLE NS_IMETHOD GetResponseStatusMessage(hyIAsciiString * *aResponseStatusMessage) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetResponseStatusMessage(aResponseStatusMessage); } 
 
 #if 0
 /* Use the code below as a template for the implementation class for this interface. */
@@ -106,8 +94,8 @@ hyHttpResponse::~hyHttpResponse()
   /* destructor code */
 }
 
-/* readonly attribute ACString responseHttpVersion; */
-NS_IMETHODIMP hyHttpResponse::GetResponseHttpVersion(nsACString & aResponseHttpVersion)
+/* readonly attribute hyIAsciiString responseHttpVersion; */
+NS_IMETHODIMP hyHttpResponse::GetResponseHttpVersion(hyIAsciiString * *aResponseHttpVersion)
 {
     return NS_ERROR_NOT_IMPLEMENTED;
 }
@@ -118,20 +106,8 @@ NS_IMETHODIMP hyHttpResponse::GetResponseStatusCode(PRUint32 *aResponseStatusCod
     return NS_ERROR_NOT_IMPLEMENTED;
 }
 
-/* readonly attribute ACString responseStatusMessage; */
-NS_IMETHODIMP hyHttpResponse::GetResponseStatusMessage(nsACString & aResponseStatusMessage)
-{
-    return NS_ERROR_NOT_IMPLEMENTED;
-}
-
-/* readonly attribute ACString responseContentType; */
-NS_IMETHODIMP hyHttpResponse::GetResponseContentType(nsACString & aResponseContentType)
-{
-    return NS_ERROR_NOT_IMPLEMENTED;
-}
-
-/* readonly attribute hyIHttpHeaderFields responseHeaders; */
-NS_IMETHODIMP hyHttpResponse::GetResponseHeaders(hyIHttpHeaderFields * *aResponseHeaders)
+/* readonly attribute hyIAsciiString responseStatusMessage; */
+NS_IMETHODIMP hyHttpResponse::GetResponseStatusMessage(hyIAsciiString * *aResponseStatusMessage)
 {
     return NS_ERROR_NOT_IMPLEMENTED;
 }

@@ -12,10 +12,12 @@ XPI_NAME		= fireshell
 
 
 XPIDLSRCS	= \
+	hyIAsciiString.idl \
 	hyIChannelHandler.idl \
 	hyIChannelHandlerListener.idl \
 	hyIChannelToStreamConverter.idl \
 	hyIChannelToStreamConverterListener.idl \
+	hyICppStdString.idl \
 	hyIDataBuffer.idl \
 	hyIDataChannel.idl \
 	hyIDataChannelListener.idl \
@@ -25,18 +27,22 @@ XPIDLSRCS	= \
 	hyIHttpHandlerListener.idl \
 	hyIHttpHandlerTable.idl \
 	hyIHttpHeaderFields.idl \
+	hyIHttpHeaderVisitor.idl \
 	hyIHttpRequestChannel.idl \
 	hyIHttpRequestChannelListener.idl \
 	hyIHttpRequest.idl \
 	hyIHttpResponseChannel.idl \
 	hyIHttpResponseChannelListener.idl \
 	hyIHttpResponse.idl \
+	hyIPipelineHttpHandler.idl \
 	hyISSLChannel.idl \
 	hyISSLChannelListener.idl \
 	hyITextChannel.idl \
 	hyITextChannelListener.idl \
 	hyIUnicodeString.idl \
 	hyIUnicodeStringIterator.idl \
+	hyIUnicodeTable.idl \
+	hyIUnicodeTableVisitor.idl \
 	hyIUploadDataChannel.idl \
 	hyIXmlChannel.idl \
 	hyIXmlChannelListener.idl \

@@ -31,8 +31,8 @@ class NS_NO_VTABLE NS_SCRIPTABLE hyIHttpHandlerListener : public nsISupports {
 
   NS_DECLARE_STATIC_IID_ACCESSOR(HYIHTTPHANDLERLISTENER_IID)
 
-  /* void onOutputHttpChannelReady (in hyIHttpResponseChannel aResponseChannel, in nsISupports aContext); */
-  NS_SCRIPTABLE NS_IMETHOD OnOutputHttpChannelReady(hyIHttpResponseChannel *aResponseChannel, nsISupports *aContext) = 0;
+  /* void onHttpResponseChannelReady (in hyIHttpResponseChannel aResponseChannel, in nsISupports aContext); */
+  NS_SCRIPTABLE NS_IMETHOD OnHttpResponseChannelReady(hyIHttpResponseChannel *aResponseChannel, nsISupports *aContext) = 0;
 
 };
 
@@ -40,15 +40,15 @@ class NS_NO_VTABLE NS_SCRIPTABLE hyIHttpHandlerListener : public nsISupports {
 
 /* Use this macro when declaring classes that implement this interface. */
 #define NS_DECL_HYIHTTPHANDLERLISTENER \
-  NS_SCRIPTABLE NS_IMETHOD OnOutputHttpChannelReady(hyIHttpResponseChannel *aResponseChannel, nsISupports *aContext); 
+  NS_SCRIPTABLE NS_IMETHOD OnHttpResponseChannelReady(hyIHttpResponseChannel *aResponseChannel, nsISupports *aContext); 
 
 /* Use this macro to declare functions that forward the behavior of this interface to another object. */
 #define NS_FORWARD_HYIHTTPHANDLERLISTENER(_to) \
-  NS_SCRIPTABLE NS_IMETHOD OnOutputHttpChannelReady(hyIHttpResponseChannel *aResponseChannel, nsISupports *aContext) { return _to OnOutputHttpChannelReady(aResponseChannel, aContext); } 
+  NS_SCRIPTABLE NS_IMETHOD OnHttpResponseChannelReady(hyIHttpResponseChannel *aResponseChannel, nsISupports *aContext) { return _to OnHttpResponseChannelReady(aResponseChannel, aContext); } 
 
 /* Use this macro to declare functions that forward the behavior of this interface to another object in a safe way. */
 #define NS_FORWARD_SAFE_HYIHTTPHANDLERLISTENER(_to) \
-  NS_SCRIPTABLE NS_IMETHOD OnOutputHttpChannelReady(hyIHttpResponseChannel *aResponseChannel, nsISupports *aContext) { return !_to ? NS_ERROR_NULL_POINTER : _to->OnOutputHttpChannelReady(aResponseChannel, aContext); } 
+  NS_SCRIPTABLE NS_IMETHOD OnHttpResponseChannelReady(hyIHttpResponseChannel *aResponseChannel, nsISupports *aContext) { return !_to ? NS_ERROR_NULL_POINTER : _to->OnHttpResponseChannelReady(aResponseChannel, aContext); } 
 
 #if 0
 /* Use the code below as a template for the implementation class for this interface. */
@@ -82,8 +82,8 @@ hyHttpHandlerListener::~hyHttpHandlerListener()
   /* destructor code */
 }
 
-/* void onOutputHttpChannelReady (in hyIHttpResponseChannel aResponseChannel, in nsISupports aContext); */
-NS_IMETHODIMP hyHttpHandlerListener::OnOutputHttpChannelReady(hyIHttpResponseChannel *aResponseChannel, nsISupports *aContext)
+/* void onHttpResponseChannelReady (in hyIHttpResponseChannel aResponseChannel, in nsISupports aContext); */
+NS_IMETHODIMP hyHttpHandlerListener::OnHttpResponseChannelReady(hyIHttpResponseChannel *aResponseChannel, nsISupports *aContext)
 {
     return NS_ERROR_NOT_IMPLEMENTED;
 }

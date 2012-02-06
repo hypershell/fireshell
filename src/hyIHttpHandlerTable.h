@@ -34,8 +34,8 @@ class NS_NO_VTABLE NS_SCRIPTABLE hyIHttpHandlerTable : public nsISupports {
   /* hyIHttpHandlerFactory getHttpHandlerFactory (in ACString aPath); */
   NS_SCRIPTABLE NS_IMETHOD GetHttpHandlerFactory(const nsACString & aPath, hyIHttpHandlerFactory * *_retval NS_OUTPARAM) = 0;
 
-  /* void registerHttpHandlerFactory (in ACString aPath, in hyIHttpHandlerFactory aFactory); */
-  NS_SCRIPTABLE NS_IMETHOD RegisterHttpHandlerFactory(const nsACString & aPath, hyIHttpHandlerFactory *aFactory) = 0;
+  /* void registerHttpHandlerFactory (in string aPath, in hyIHttpHandlerFactory aFactory); */
+  NS_SCRIPTABLE NS_IMETHOD RegisterHttpHandlerFactory(const char * aPath, hyIHttpHandlerFactory *aFactory) = 0;
 
 };
 
@@ -44,17 +44,17 @@ class NS_NO_VTABLE NS_SCRIPTABLE hyIHttpHandlerTable : public nsISupports {
 /* Use this macro when declaring classes that implement this interface. */
 #define NS_DECL_HYIHTTPHANDLERTABLE \
   NS_SCRIPTABLE NS_IMETHOD GetHttpHandlerFactory(const nsACString & aPath, hyIHttpHandlerFactory * *_retval NS_OUTPARAM); \
-  NS_SCRIPTABLE NS_IMETHOD RegisterHttpHandlerFactory(const nsACString & aPath, hyIHttpHandlerFactory *aFactory); 
+  NS_SCRIPTABLE NS_IMETHOD RegisterHttpHandlerFactory(const char * aPath, hyIHttpHandlerFactory *aFactory); 
 
 /* Use this macro to declare functions that forward the behavior of this interface to another object. */
 #define NS_FORWARD_HYIHTTPHANDLERTABLE(_to) \
   NS_SCRIPTABLE NS_IMETHOD GetHttpHandlerFactory(const nsACString & aPath, hyIHttpHandlerFactory * *_retval NS_OUTPARAM) { return _to GetHttpHandlerFactory(aPath, _retval); } \
-  NS_SCRIPTABLE NS_IMETHOD RegisterHttpHandlerFactory(const nsACString & aPath, hyIHttpHandlerFactory *aFactory) { return _to RegisterHttpHandlerFactory(aPath, aFactory); } 
+  NS_SCRIPTABLE NS_IMETHOD RegisterHttpHandlerFactory(const char * aPath, hyIHttpHandlerFactory *aFactory) { return _to RegisterHttpHandlerFactory(aPath, aFactory); } 
 
 /* Use this macro to declare functions that forward the behavior of this interface to another object in a safe way. */
 #define NS_FORWARD_SAFE_HYIHTTPHANDLERTABLE(_to) \
   NS_SCRIPTABLE NS_IMETHOD GetHttpHandlerFactory(const nsACString & aPath, hyIHttpHandlerFactory * *_retval NS_OUTPARAM) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetHttpHandlerFactory(aPath, _retval); } \
-  NS_SCRIPTABLE NS_IMETHOD RegisterHttpHandlerFactory(const nsACString & aPath, hyIHttpHandlerFactory *aFactory) { return !_to ? NS_ERROR_NULL_POINTER : _to->RegisterHttpHandlerFactory(aPath, aFactory); } 
+  NS_SCRIPTABLE NS_IMETHOD RegisterHttpHandlerFactory(const char * aPath, hyIHttpHandlerFactory *aFactory) { return !_to ? NS_ERROR_NULL_POINTER : _to->RegisterHttpHandlerFactory(aPath, aFactory); } 
 
 #if 0
 /* Use the code below as a template for the implementation class for this interface. */
@@ -94,8 +94,8 @@ NS_IMETHODIMP hyHttpHandlerTable::GetHttpHandlerFactory(const nsACString & aPath
     return NS_ERROR_NOT_IMPLEMENTED;
 }
 
-/* void registerHttpHandlerFactory (in ACString aPath, in hyIHttpHandlerFactory aFactory); */
-NS_IMETHODIMP hyHttpHandlerTable::RegisterHttpHandlerFactory(const nsACString & aPath, hyIHttpHandlerFactory *aFactory)
+/* void registerHttpHandlerFactory (in string aPath, in hyIHttpHandlerFactory aFactory); */
+NS_IMETHODIMP hyHttpHandlerTable::RegisterHttpHandlerFactory(const char * aPath, hyIHttpHandlerFactory *aFactory)
 {
     return NS_ERROR_NOT_IMPLEMENTED;
 }

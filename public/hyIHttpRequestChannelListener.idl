@@ -6,6 +6,8 @@
 interface hyIHttpRequestChannelListener : nsISupports {
     void onHttpRequestReady(
         in hyIHttpRequest aRequest,
+
+        in hyIHttpHeaderFields aHeaders,
         
         /* 
          * This carries the actual HTTP content other than 

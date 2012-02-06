@@ -1,0 +1,18 @@
+
+#include "nsISupports.idl"
+
+[scriptable, uuid(c0ba3a69-2a5c-4d59-acb4-406b4ad80e3d)]
+interface hyIAsciiString : nsISupports
+{
+    readonly attribute unsigned long long length;
+    readonly attribute string data;
+
+    /*
+     * This allows the string class to perform
+     * some optimization if both string objects
+     * are belong to the same implementation class,
+     * as determined by QueryInterface-ing the other
+     * string.
+     */
+    bool equalString(in hyIAsciiString aOther);
+};

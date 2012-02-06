@@ -1,13 +1,39 @@
 #include "nsISupports.idl"
 #include "nsIURI.idl"
 #include "hyIHttpHeaderFields.idl"
+#include "hyIUnicodeTable.idl"
 
 [scriptable, uuid(fa9f2917-2256-496c-9663-8aca31ce283c)]
 interface hyIHttpRequest : nsISupports {
-    readonly attribute ACString             requestHttpVersion;
-    readonly attribute nsIURI               requestURI;
-    readonly attribute ACString             requestMethod;
-    readonly attribute ACString             requestHost;
-    readonly attribute ACString             requestContentType;
-    readonly attribute hyIHttpHeaderFields  requestHeaders;
+    readonly attribute hyIAsciiString       requestHttpVersion;
+    readonly attribute hyIAsciiString       requestPath;
+
+    /*
+     * The query string part of the HTTP request. The value must
+     * be URL-escaped according to the percent encoding and the 
+     * string shall be interpreted in ASCII encoding.
+     */
+    readonly attribute hyIAsciiString       requestQueryString;
+
+    /*
+     * A processed version of the decoded query string into
+     * table entries. If the query string is not yet processed
+     * then this may return NULL, and the caller would have to
+     * process the query string itself.
+     */
+    readonly attribute hyIUnicodeTable      requestQueryParams;
+
+    /*
+     * Request method such as GET and POST encoded in ASCII C string.
+     */
+    readonly attribute hyIAsciiString       requestMethod;
+
+    /*
+     * Hostname encoded in ASCII. This field should only be considered
+     * by top-level dispatcher handler. Application-level handlers 
+     * should not rely on this field, as the domain might change to 
+     * localhost during subrequest. Instead, use Hypershell-related
+     * HTTP headers to retrieve information about the server environment.
+     */
+    readonly attribute hyIAsciiString       requestHost;
 };

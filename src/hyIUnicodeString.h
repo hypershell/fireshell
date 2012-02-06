@@ -10,8 +10,16 @@
 #include "nsISupports.h"
 #endif
 
+#ifndef __gen_hyIAsciiString_h__
+#include "hyIAsciiString.h"
+#endif
+
 #ifndef __gen_hyIUnicodeStringIterator_h__
 #include "hyIUnicodeStringIterator.h"
+#endif
+
+#ifndef __gen_hyIDataBuffer_h__
+#include "hyIDataBuffer.h"
 #endif
 
 /* For IDL files that don't want to include root IDL files. */
@@ -31,20 +39,20 @@ class NS_NO_VTABLE NS_SCRIPTABLE hyIUnicodeString : public nsISupports {
 
   NS_DECLARE_STATIC_IID_ACCESSOR(HYIUNICODESTRING_IID)
 
-  /* readonly attribute unsigned long long size; */
-  NS_SCRIPTABLE NS_IMETHOD GetSize(PRUint64 *aSize) = 0;
+  /* readonly attribute unsigned long long length; */
+  NS_SCRIPTABLE NS_IMETHOD GetLength(PRUint64 *aLength) = 0;
 
   /* hyIUnicodeStringIterator iter (); */
   NS_SCRIPTABLE NS_IMETHOD Iter(hyIUnicodeStringIterator * *_retval NS_OUTPARAM) = 0;
 
-  /* readonly attribute string encoding; */
-  NS_SCRIPTABLE NS_IMETHOD GetEncoding(char * *aEncoding) = 0;
+  /* readonly attribute hyIAsciiString encoding; */
+  NS_SCRIPTABLE NS_IMETHOD GetEncoding(hyIAsciiString * *aEncoding) = 0;
 
-  /* readonly attribute unsigned long long byteSize; */
-  NS_SCRIPTABLE NS_IMETHOD GetByteSize(PRUint64 *aByteSize) = 0;
+  /* readonly attribute hyIDataBuffer buffer; */
+  NS_SCRIPTABLE NS_IMETHOD GetBuffer(hyIDataBuffer * *aBuffer) = 0;
 
-  /* readonly attribute string bytes; */
-  NS_SCRIPTABLE NS_IMETHOD GetBytes(char * *aBytes) = 0;
+  /* bool equalCodepoint (in hyIUnicodeString aOther); */
+  NS_SCRIPTABLE NS_IMETHOD EqualCodepoint(hyIUnicodeString *aOther, bool *_retval NS_OUTPARAM) = 0;
 
 };
 
@@ -52,27 +60,27 @@ class NS_NO_VTABLE NS_SCRIPTABLE hyIUnicodeString : public nsISupports {
 
 /* Use this macro when declaring classes that implement this interface. */
 #define NS_DECL_HYIUNICODESTRING \
-  NS_SCRIPTABLE NS_IMETHOD GetSize(PRUint64 *aSize); \
+  NS_SCRIPTABLE NS_IMETHOD GetLength(PRUint64 *aLength); \
   NS_SCRIPTABLE NS_IMETHOD Iter(hyIUnicodeStringIterator * *_retval NS_OUTPARAM); \
-  NS_SCRIPTABLE NS_IMETHOD GetEncoding(char * *aEncoding); \
-  NS_SCRIPTABLE NS_IMETHOD GetByteSize(PRUint64 *aByteSize); \
-  NS_SCRIPTABLE NS_IMETHOD GetBytes(char * *aBytes); 
+  NS_SCRIPTABLE NS_IMETHOD GetEncoding(hyIAsciiString * *aEncoding); \
+  NS_SCRIPTABLE NS_IMETHOD GetBuffer(hyIDataBuffer * *aBuffer); \
+  NS_SCRIPTABLE NS_IMETHOD EqualCodepoint(hyIUnicodeString *aOther, bool *_retval NS_OUTPARAM); 
 
 /* Use this macro to declare functions that forward the behavior of this interface to another object. */
 #define NS_FORWARD_HYIUNICODESTRING(_to) \
-  NS_SCRIPTABLE NS_IMETHOD GetSize(PRUint64 *aSize) { return _to GetSize(aSize); } \
+  NS_SCRIPTABLE NS_IMETHOD GetLength(PRUint64 *aLength) { return _to GetLength(aLength); } \
   NS_SCRIPTABLE NS_IMETHOD Iter(hyIUnicodeStringIterator * *_retval NS_OUTPARAM) { return _to Iter(_retval); } \
-  NS_SCRIPTABLE NS_IMETHOD GetEncoding(char * *aEncoding) { return _to GetEncoding(aEncoding); } \
-  NS_SCRIPTABLE NS_IMETHOD GetByteSize(PRUint64 *aByteSize) { return _to GetByteSize(aByteSize); } \
-  NS_SCRIPTABLE NS_IMETHOD GetBytes(char * *aBytes) { return _to GetBytes(aBytes); } 
+  NS_SCRIPTABLE NS_IMETHOD GetEncoding(hyIAsciiString * *aEncoding) { return _to GetEncoding(aEncoding); } \
+  NS_SCRIPTABLE NS_IMETHOD GetBuffer(hyIDataBuffer * *aBuffer) { return _to GetBuffer(aBuffer); } \
+  NS_SCRIPTABLE NS_IMETHOD EqualCodepoint(hyIUnicodeString *aOther, bool *_retval NS_OUTPARAM) { return _to EqualCodepoint(aOther, _retval); } 
 
 /* Use this macro to declare functions that forward the behavior of this interface to another object in a safe way. */
 #define NS_FORWARD_SAFE_HYIUNICODESTRING(_to) \
-  NS_SCRIPTABLE NS_IMETHOD GetSize(PRUint64 *aSize) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetSize(aSize); } \
+  NS_SCRIPTABLE NS_IMETHOD GetLength(PRUint64 *aLength) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetLength(aLength); } \
   NS_SCRIPTABLE NS_IMETHOD Iter(hyIUnicodeStringIterator * *_retval NS_OUTPARAM) { return !_to ? NS_ERROR_NULL_POINTER : _to->Iter(_retval); } \
-  NS_SCRIPTABLE NS_IMETHOD GetEncoding(char * *aEncoding) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetEncoding(aEncoding); } \
-  NS_SCRIPTABLE NS_IMETHOD GetByteSize(PRUint64 *aByteSize) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetByteSize(aByteSize); } \
-  NS_SCRIPTABLE NS_IMETHOD GetBytes(char * *aBytes) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetBytes(aBytes); } 
+  NS_SCRIPTABLE NS_IMETHOD GetEncoding(hyIAsciiString * *aEncoding) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetEncoding(aEncoding); } \
+  NS_SCRIPTABLE NS_IMETHOD GetBuffer(hyIDataBuffer * *aBuffer) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetBuffer(aBuffer); } \
+  NS_SCRIPTABLE NS_IMETHOD EqualCodepoint(hyIUnicodeString *aOther, bool *_retval NS_OUTPARAM) { return !_to ? NS_ERROR_NULL_POINTER : _to->EqualCodepoint(aOther, _retval); } 
 
 #if 0
 /* Use the code below as a template for the implementation class for this interface. */
@@ -106,8 +114,8 @@ hyUnicodeString::~hyUnicodeString()
   /* destructor code */
 }
 
-/* readonly attribute unsigned long long size; */
-NS_IMETHODIMP hyUnicodeString::GetSize(PRUint64 *aSize)
+/* readonly attribute unsigned long long length; */
+NS_IMETHODIMP hyUnicodeString::GetLength(PRUint64 *aLength)
 {
     return NS_ERROR_NOT_IMPLEMENTED;
 }
@@ -118,20 +126,20 @@ NS_IMETHODIMP hyUnicodeString::Iter(hyIUnicodeStringIterator * *_retval NS_OUTPA
     return NS_ERROR_NOT_IMPLEMENTED;
 }
 
-/* readonly attribute string encoding; */
-NS_IMETHODIMP hyUnicodeString::GetEncoding(char * *aEncoding)
+/* readonly attribute hyIAsciiString encoding; */
+NS_IMETHODIMP hyUnicodeString::GetEncoding(hyIAsciiString * *aEncoding)
 {
     return NS_ERROR_NOT_IMPLEMENTED;
 }
 
-/* readonly attribute unsigned long long byteSize; */
-NS_IMETHODIMP hyUnicodeString::GetByteSize(PRUint64 *aByteSize)
+/* readonly attribute hyIDataBuffer buffer; */
+NS_IMETHODIMP hyUnicodeString::GetBuffer(hyIDataBuffer * *aBuffer)
 {
     return NS_ERROR_NOT_IMPLEMENTED;
 }
 
-/* readonly attribute string bytes; */
-NS_IMETHODIMP hyUnicodeString::GetBytes(char * *aBytes)
+/* bool equalCodepoint (in hyIUnicodeString aOther); */
+NS_IMETHODIMP hyUnicodeString::EqualCodepoint(hyIUnicodeString *aOther, bool *_retval NS_OUTPARAM)
 {
     return NS_ERROR_NOT_IMPLEMENTED;
 }

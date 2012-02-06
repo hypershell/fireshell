@@ -5,8 +5,8 @@
 [scriptable, uuid(09f57586-308b-4dbd-ae82-5dcf7ba5e3fa)]
 interface hyIHttpHandler : nsISupports
 {
-    void acceptHttpRequestChannel(
-        in hyIHttpRequestChannel    aRequestChannel,
-        in hyIHttpHandlerListener   aListener,
-        in nsISupports aContext);
+  void acceptHttpRequestChannel(
+    in hyIHttpRequestChannel    aRequestChannel,
+    in hyIHttpHandlerListener   aListener,
+    in nsISupports aContext);
 };

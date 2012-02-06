@@ -1,0 +1,10 @@
+
+#include "nsISupports.idl"
+#include "hyIUnicodeString.idl"
+
+[scriptable, uuid(87680a6f-85da-4ecb-bf2e-4079a62f3337)]
+interface hyIUnicodeTableVisitor : nsISupports {
+    void visitTableEntry(
+            in hyIUnicodeString aKey, 
+            in hyIUnicodeString aValue);
+};
